@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Client Intake Summary - {{ business_name }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #fff;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid #20B2AA;
+        }
+        
+        .header h1 {
+            background: linear-gradient(135deg, #1E3A8A 0%, #20B2AA 50%, #4FD1C7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        
+        .header .subtitle {
+            color: #6c757d;
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+        
+        .meta-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            border-left: 4px solid #20B2AA;
+        }
+        
+        .meta-info h3 {
+            color: #1E3A8A;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            page-break-inside: avoid;
+        }
+        
+        .section h2 {
+            color: #1E3A8A;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #20B2AA;
+        }
+        
+        .section h3 {
+            color: #495057;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            margin-top: 25px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-card {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .info-card h4 {
+            color: #1E3A8A;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        .highlight-box {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2196f3;
+            margin: 20px 0;
+        }
+        
+        .checkbox-list {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .checkbox-list ul {
+            margin: 0;
+            padding-left: 20px;
+            list-style-type: none;
+        }
+        
+        .checkbox-list li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .checkbox-list li:before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            position: absolute;
+            left: -20px;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #dee2e6;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+        
+        @media print {
+            body { padding: 20px; }
+            .section { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Social Media Client Intake Summary</h1>
+        <div class="subtitle">MW Design Studio - Client Onboarding</div>
+    </div>
+    
+    <div class="meta-info">
+        <h3>Client Information</h3>
+        <p><strong>Business:</strong> {{ business_name or 'N/A' }}</p>
+        <p><strong>Contact:</strong> {{ contact_name or 'N/A' }} ({{ email or 'N/A' }})</p>
+        {% if website %}
+        <p><strong>Website:</strong> {{ website }}</p>
+        {% endif %}
+        <p><strong>Submission Date:</strong> {{ created_at.strftime('%B %d, %Y') if created_at else 'N/A' }}</p>
+    </div>
+    
+    <div class="section">
+        <h2>Business Overview</h2>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Products & Services</h4>
+                <p>{{ products_services or 'Not specified' }}</p>
+            </div>
+            <div class="info-card">
+                <h4>What Makes Them Unique</h4>
+                <p>{{ usp or 'Not specified' }}</p>
+            </div>
+        </div>
+        
+        <h3>Mission & Brand Story</h3>
+        <p>{{ brand_story or 'Not specified' }}</p>
+        
+        {% if social_media %}
+        <h3>Current Social Media Presence</h3>
+        <p>{{ social_media }}</p>
+        {% endif %}
+    </div>
+    
+    <div class="section">
+        <h2>Social Media Goals & Strategy</h2>
+        
+        {% if goals %}
+        <h3>Primary Goals</h3>
+        <div class="checkbox-list">
+            <ul>
+                {% for goal in goals %}
+                <li>{{ goal.replace('_', ' ').title() }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        <div class="info-grid">
+            {% if kpi %}
+            <div class="info-card">
+                <h4>Key Performance Indicators</h4>
+                <p>{{ kpi }}</p>
+            </div>
+            {% endif %}
+            <div class="info-card">
+                <h4>Paid Advertising</h4>
+                <p>{{ paid_ads or 'Not specified' }}</p>
+            </div>
+        </div>
+        
+        {% if timeline %}
+        <h3>Timeline & Deadlines</h3>
+        <p>{{ timeline }}</p>
+        {% endif %}
+    </div>
+    
+    <div class="section">
+        <h2>Target Audience Profile</h2>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Demographics</h4>
+                <p>{{ demographics or 'Not specified' }}</p>
+            </div>
+            <div class="info-card">
+                <h4>Problems & Solutions</h4>
+                <p>{{ problems_solutions or 'Not specified' }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Brand Voice & Messaging</h2>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Brand Voice</h4>
+                <p>{{ brand_voice.title() if brand_voice else 'Not specified' }}</p>
+            </div>
+            {% if content_tone %}
+            <div class="info-card">
+                <h4>Content Tone</h4>
+                <p>{{ content_tone }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Platform Strategy</h2>
+        
+        {% if platforms %}
+        <h3>Platforms to Manage</h3>
+        <div class="checkbox-list">
+            <ul>
+                {% for platform in platforms %}
+                <li>{{ platform.title() }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        <div class="highlight-box">
+            <strong>Management Approach:</strong> {{ management_type or 'Not specified' }}
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Content & Production Details</h2>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <h4>Existing Content Available</h4>
+                <p>{{ existing_content or 'Not specified' }}</p>
+            </div>
+            <div class="info-card">
+                <h4>Content Writing</h4>
+                <p>{{ content_writing or 'Not specified' }}</p>
+            </div>
+        </div>
+        
+        {% if brand_colors %}
+        <h3>Brand Colors</h3>
+        <p>{{ brand_colors }}</p>
+        {% endif %}
+        
+        {% if brand_fonts %}
+        <h3>Brand Fonts</h3>
+        <p>{{ brand_fonts }}</p>
+        {% endif %}
+    </div>
+    
+    {% if competitors or inspiration %}
+    <div class="section">
+        <h2>Competitive Analysis & Inspiration</h2>
+        
+        {% if competitors %}
+        <h3>Top Competitors</h3>
+        <p>{{ competitors }}</p>
+        {% endif %}
+        
+        {% if inspiration %}
+        <h3>Inspiration Accounts</h3>
+        <p>{{ inspiration }}</p>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    {% if additional_info %}
+    <div class="section">
+        <h2>Additional Information</h2>
+        <p>{{ additional_info }}</p>
+    </div>
+    {% endif %}
+    
+    <div class="footer">
+        <p>This client intake summary was generated on {{ created_at.strftime('%B %d, %Y') if created_at else 'today' }} for MW Design Studio.</p>
+        <p>Client Contact: {{ contact_name or 'N/A' }} - {{ email or 'N/A' }}</p>
+        <p>MW Design Studio: info@mwdesign.agency</p>
+    </div>
+</body>
+</html>
