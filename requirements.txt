@@ -9,3 +9,4 @@ Werkzeug==2.3.7
 python-dotenv==1.0.0
 email-validator==2.0.0
 requests==2.31.0
+notion-client==2.0.0
