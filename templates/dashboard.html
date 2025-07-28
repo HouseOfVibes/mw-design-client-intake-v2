@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MW Design Studio - Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg gradient-background">
+        <div class="container">
+            <a class="navbar-brand header-font text-white" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-chart-line me-2"></i>MW Design Studio Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link text-white" href="{{ url_for('home') }}">
+                    <i class="fas fa-external-link-alt me-1"></i>Client Form
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card dashboard-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-file-alt fa-3x text-primary mb-3"></i>
+                        <h3 class="card-title">{{ total_submissions }}</h3>
+                        <p class="text-muted">Total Submissions</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card dashboard-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                        <h3 class="card-title">{{ new_submissions }}</h3>
+                        <p class="text-muted">New This Week</p>
+                    </div>
+                </div>
+            </div>
+            {% if notion_enabled %}
+            <div class="col-md-3">
+                <div class="card dashboard-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-sync fa-3x text-success mb-3"></i>
+                        <h3 class="card-title">{{ synced_count }}</h3>
+                        <p class="text-muted">Synced to Notion</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card dashboard-card">
+                    <div class="card-body text-center">
+                        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+                        <h3 class="card-title">{{ failed_sync_count }}</h3>
+                        <p class="text-muted">Sync Errors</p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-md-6">
+                <div class="card dashboard-card border-warning">
+                    <div class="card-body text-center">
+                        <i class="fas fa-database fa-3x text-warning mb-3"></i>
+                        <h5 class="card-title">Notion Integration</h5>
+                        <p class="text-muted">Not configured. Add NOTION_TOKEN and NOTION_DB_ID to enable.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-bolt me-2"></i>Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <a href="{{ url_for('submissions_list') }}" class="btn btn-primary w-100 mb-2">
+                                    <i class="fas fa-list me-2"></i>View All Submissions
+                                </a>
+                            </div>
+                            <div class="col-md-3">
+                                <a href="{{ url_for('export_csv') }}" class="btn btn-secondary w-100 mb-2">
+                                    <i class="fas fa-download me-2"></i>Export CSV
+                                </a>
+                            </div>
+                            {% if notion_enabled %}
+                            <div class="col-md-3">
+                                <form method="POST" action="{{ url_for('sync_all_notion') }}" class="d-inline">
+                                    <button type="submit" class="btn btn-success w-100 mb-2" onclick="return confirm('Sync all unsynced submissions to Notion?')">
+                                        <i class="fas fa-sync me-2"></i>Sync All to Notion
+                                    </button>
+                                </form>
+                            </div>
+                            {% endif %}
+                            <div class="col-md-3">
+                                <a href="{{ url_for('home') }}" class="btn btn-outline-primary w-100 mb-2">
+                                    <i class="fas fa-plus me-2"></i>New Submission
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Submissions -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5><i class="fas fa-clock me-2"></i>Recent Submissions</h5>
+                        <a href="{{ url_for('submissions_list') }}" class="btn btn-sm btn-outline-primary">View All</a>
+                    </div>
+                    <div class="card-body">
+                        {% if submissions %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Business</th>
+                                            <th>Contact</th>
+                                            <th>Email</th>
+                                            <th>Budget</th>
+                                            <th>Status</th>
+                                            {% if notion_enabled %}
+                                            <th>Notion</th>
+                                            {% endif %}
+                                            <th>Submitted</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for submission in submissions %}
+                                        <tr>
+                                            <td>
+                                                <strong>{{ submission.business_name or 'N/A' }}</strong>
+                                                {% if submission.website %}
+                                                <br><small class="text-muted">{{ submission.website }}</small>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ submission.contact_name or 'N/A' }}</td>
+                                            <td>
+                                                {% if submission.email %}
+                                                <a href="mailto:{{ submission.email }}">{{ submission.email }}</a>
+                                                {% else %}N/A{% endif %}
+                                            </td>
+                                            <td>
+                                                {% if submission.budget %}
+                                                <span class="badge bg-success">{{ submission.budget }}</span>
+                                                {% else %}
+                                                <span class="badge bg-secondary">Not specified</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% set status = submission.status if submission.status else 'New' %}
+                                                {% if status == 'New' %}
+                                                <span class="badge bg-primary">{{ status }}</span>
+                                                {% elif status == 'In Progress' %}
+                                                <span class="badge bg-warning">{{ status }}</span>
+                                                {% elif status == 'Completed' %}
+                                                <span class="badge bg-success">{{ status }}</span>
+                                                {% else %}
+                                                <span class="badge bg-secondary">{{ status }}</span>
+                                                {% endif %}
+                                            </td>
+                                            {% if notion_enabled %}
+                                            <td>
+                                                {% if submission.synced_to_notion %}
+                                                <i class="fas fa-check-circle text-success" title="Synced"></i>
+                                                {% elif submission.notion_sync_error %}
+                                                <i class="fas fa-exclamation-circle text-danger" title="Sync Error"></i>
+                                                {% else %}
+                                                <i class="fas fa-clock text-warning" title="Pending"></i>
+                                                {% endif %}
+                                            </td>
+                                            {% endif %}
+                                            <td>
+                                                <small class="text-muted">
+                                                    {{ submission.created_at.strftime('%m/%d/%Y') if submission.created_at else 'N/A' }}
+                                                </small>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <a href="{{ url_for('view_submission', submission_id=submission.id) }}" 
+                                                       class="btn btn-sm btn-outline-primary" title="View Details">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    <a href="{{ url_for('download_pdf', submission_id=submission.id) }}" 
+                                                       class="btn btn-sm btn-outline-secondary" title="Download PDF">
+                                                        <i class="fas fa-file-pdf"></i>
+                                                    </a>
+                                                    {% if notion_enabled and not submission.synced_to_notion %}
+                                                    <form method="POST" action="{{ url_for('sync_single_notion', submission_id=submission.id) }}" class="d-inline">
+                                                        <button type="submit" class="btn btn-sm btn-outline-success" title="Sync to Notion">
+                                                            <i class="fas fa-sync"></i>
+                                                        </button>
+                                                    </form>
+                                                    {% endif %}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                <h5 class="text-muted">No submissions yet</h5>
+                                <p class="text-muted">Client submissions will appear here once they start using your intake form.</p>
+                                <a href="{{ url_for('home') }}" class="btn btn-primary">
+                                    <i class="fas fa-plus me-2"></i>Create Test Submission
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
