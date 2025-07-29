@@ -1,0 +1,55 @@
+# Render.com Deployment Configuration
+# MW Design Studio - Client Intake System v2.0
+
+version: 1
+
+services:
+  # Main FastAPI Application
+  - type: web
+    name: mw-design-client-intake-v2
+    env: python
+    plan: starter  # Free tier to start
+    buildCommand: pip install -r requirements_v2.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    
+    # Environment Variables
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mw-design-postgres
+          property: connectionString
+    
+    # Health Check
+    healthCheckPath: /health
+    
+    # Auto-deploy from GitHub
+    autoDeploy: true
+    
+    # Custom Headers (Optional)
+    headers:
+      - path: /*
+        name: X-Frame-Options
+        value: DENY
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+
+# Database Configuration
+databases:
+  - name: mw-design-postgres
+    databaseName: mw_design_intake_v2
+    user: mw_admin
+    plan: starter  # Free PostgreSQL instance
+
+# Static File Serving (if needed)
+# Note: FastAPI serves static files, but this is for CDN if required
+# staticSites:
+#   - buildCommand: echo "No build needed for static assets"
+#     publishPath: static
+#     pullRequestPreviewsEnabled: false
