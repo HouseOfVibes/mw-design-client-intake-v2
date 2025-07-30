@@ -33,10 +33,6 @@ pydantic[email]==2.5.0
 python-dotenv==1.0.0
 gunicorn==21.2.0
 
-# Data Processing & Export
-pandas==2.1.4
-openpyxl==3.1.2
-
 # HTTP Client for integrations
 httpx==0.25.2
 requests==2.31.0
