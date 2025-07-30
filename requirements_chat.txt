@@ -1,0 +1,49 @@
+# MW Design Studio - Enhanced Client Intake System with Google Chat Integration
+# FastAPI + Tailwind CSS + PostgreSQL + Google Chat Webhooks Stack
+
+# Core FastAPI Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database & ORM
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+alembic==1.13.0
+
+# Templates & Static Files
+jinja2==3.1.2
+aiofiles==23.2.1
+
+# Authentication & Security
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]==3.3.0
+python-decouple==3.8
+
+# PDF Generation (Enhanced)
+reportlab==4.0.7
+weasyprint==60.2
+fpdf2==2.7.6
+
+# Email & Communication
+email_validator==2.1.0
+pydantic[email]==2.5.0
+
+# Google Chat Webhooks & HTTP Requests
+requests==2.31.0
+httpx==0.25.2
+
+# Development & Production
+python-dotenv==1.0.0
+gunicorn==21.2.0
+
+# Data Processing & Export
+pandas==2.1.4
+openpyxl==3.1.2
+
+# Utilities
+python-dateutil==2.8.2
+pytz==2023.3
+
+# Async Support
+asyncio-extensions==0.1.0
