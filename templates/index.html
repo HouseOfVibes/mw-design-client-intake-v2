@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MW Design Studio - Client Intake Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" data-bs-theme="dark">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h1 class="card-title header-font">MW Design Studio</h1>
+                        <p class="mb-0">Client Intake Form</p>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-4">
+                            Please fill out this form to help us understand your business and social media needs. 
+                            This information will help us create a customized strategy for your brand.
+                        </p>
+                        
+                        <form method="post" action="{{ url_for('submit_intake_form') }}">
+                            <!-- Business Information -->
+                            <div class="section-header">
+                                <h3>Business Information</h3>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="business_name" class="form-label">Business Name *</label>
+                                    <input type="text" class="form-control" name="business_name" id="business_name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="website" class="form-label">Website URL</label>
+                                    <input type="url" class="form-control" name="website" id="website">
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="contact_name" class="form-label">Contact Name *</label>
+                                    <input type="text" class="form-control" name="contact_name" id="contact_name" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="email" class="form-label">Email Address *</label>
+                                    <input type="email" class="form-control" name="email" id="email" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="phone" class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" name="phone" id="phone">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="products_services" class="form-label">What products or services does your business offer?</label>
+                                <textarea class="form-control" name="products_services" id="products_services" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="brand_story" class="form-label">Tell us your brand story</label>
+                                <textarea class="form-control" name="brand_story" id="brand_story" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="usp" class="form-label">What makes your business unique?</label>
+                                <textarea class="form-control" name="usp" id="usp" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="company_size" class="form-label">Company Size</label>
+                                    <select class="form-select" name="company_size" id="company_size">
+                                        <option value="">Select...</option>
+                                        <option value="1-10">1-10 employees</option>
+                                        <option value="11-50">11-50 employees</option>
+                                        <option value="51-200">51-200 employees</option>
+                                        <option value="200+">200+ employees</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="budget" class="form-label">Monthly Marketing Budget</label>
+                                    <select class="form-select" name="budget" id="budget">
+                                        <option value="">Select...</option>
+                                        <option value="<$1000">Less than $1,000</option>
+                                        <option value="$1000-$5000">$1,000 - $5,000</option>
+                                        <option value="$5000-$10000">$5,000 - $10,000</option>
+                                        <option value="$10000+">$10,000+</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Goals and Objectives -->
+                            <div class="section-header">
+                                <h3>Goals and Objectives</h3>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">What are your primary social media goals? (Check all that apply)</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="goals" value="brand_awareness" id="goal_brand">
+                                    <label class="form-check-label" for="goal_brand">Brand Awareness</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="goals" value="lead_generation" id="goal_leads">
+                                    <label class="form-check-label" for="goal_leads">Lead Generation</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="goals" value="sales" id="goal_sales">
+                                    <label class="form-check-label" for="goal_sales">Drive Sales</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="goals" value="engagement" id="goal_engagement">
+                                    <label class="form-check-label" for="goal_engagement">Increase Engagement</label>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Which platforms are you interested in? (Check all that apply)</label>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="platforms" value="instagram" id="platform_instagram">
+                                            <label class="form-check-label" for="platform_instagram">Instagram</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="platforms" value="facebook" id="platform_facebook">
+                                            <label class="form-check-label" for="platform_facebook">Facebook</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="platforms" value="twitter" id="platform_twitter">
+                                            <label class="form-check-label" for="platform_twitter">Twitter/X</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="platforms" value="linkedin" id="platform_linkedin">
+                                            <label class="form-check-label" for="platform_linkedin">LinkedIn</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="platforms" value="tiktok" id="platform_tiktok">
+                                            <label class="form-check-label" for="platform_tiktok">TikTok</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="platforms" value="youtube" id="platform_youtube">
+                                            <label class="form-check-label" for="platform_youtube">YouTube</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Additional Information -->
+                            <div class="mb-3">
+                                <label for="additional_info" class="form-label">Additional Information</label>
+                                <textarea class="form-control" name="additional_info" id="additional_info" rows="4" placeholder="Anything else you'd like us to know about your business or goals?"></textarea>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Submit Intake Form</button>
+                                <a href="{{ url_for('login') }}" class="btn btn-outline-secondary">Admin Login</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
