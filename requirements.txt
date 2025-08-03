@@ -6,9 +6,9 @@ fastapi==0.110.0
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 
-# Pydantic - Updated to a newer version with pre-compiled wheels
-pydantic[email]==2.7.1
-pydantic-settings==2.2.1
+# Pydantic - Using version 2.5.3 which has better wheel support
+pydantic[email]==2.5.3
+pydantic-settings==2.0.3
 # Let pydantic handle its own pydantic-core dependency
 # pydantic-core will be installed automatically with the correct version
 
