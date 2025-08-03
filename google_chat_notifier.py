@@ -10,6 +10,7 @@ from typing import Optional, Dict, Any, List
 import os
 from dataclasses import dataclass
 import logging
+import asyncio
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -422,6 +423,31 @@ class GoogleChatNotifier:
                 results[webhook_key] = False
                 
         return results
+    
+    # Synchronous wrapper methods for Flask integration
+    def send_new_submission_sync(self, submission_data: Dict) -> bool:
+        """Synchronous wrapper for send_new_submission_notification"""
+        try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            result = loop.run_until_complete(self.send_new_submission_notification(submission_data))
+            loop.close()
+            return result
+        except Exception as e:
+            logger.error(f"Error in sync submission notification: {e}")
+            return False
+    
+    def send_status_update_sync(self, submission_data: Dict, old_status: str, new_status: str) -> bool:
+        """Synchronous wrapper for send_status_update_notification"""
+        try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            result = loop.run_until_complete(self.send_status_update_notification(submission_data, old_status, new_status))
+            loop.close()
+            return result
+        except Exception as e:
+            logger.error(f"Error in sync status update notification: {e}")
+            return False
 
 # Global instance
 google_chat_notifier = GoogleChatNotifier()

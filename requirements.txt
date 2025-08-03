@@ -32,10 +32,10 @@ gunicorn==21.2.0
 # HTTP Client for integrations
 requests==2.31.0
 
-# Google API Integration (optional - for Google Chat notifications)
-# google-api-python-client==2.110.0
-# google-auth-httplib2==0.1.1
-# google-auth-oauthlib==1.2.0
+# Google API Integration (for Google Chat notifications)
+google-api-python-client==2.110.0
+google-auth-httplib2==0.1.1
+google-auth-oauthlib==1.2.0
 
 # Utilities
 python-dateutil==2.8.2

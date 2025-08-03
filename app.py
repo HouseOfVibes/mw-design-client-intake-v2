@@ -26,6 +26,15 @@ except ImportError:
     NOTION_AVAILABLE = False
     print("notion-client not installed. Notion integration disabled.")
 
+# Google Chat integration
+try:
+    from google_chat_notifier import GoogleChatNotifier
+    chat_notifier = GoogleChatNotifier()
+    CHAT_AVAILABLE = True
+except ImportError:
+    CHAT_AVAILABLE = False
+    print("Google Chat notifier not available.")
+
 # Load environment variables
 load_dotenv()
 
@@ -285,6 +294,21 @@ def submit_form():
         
         db.session.add(new_submission)
         db.session.commit()
+        
+        # Send Google Chat notification
+        if CHAT_AVAILABLE:
+            try:
+                chat_notifier.send_new_submission_sync({
+                    'id': new_submission.id,
+                    'business_name': new_submission.business_name,
+                    'contact_name': new_submission.contact_name,
+                    'email': new_submission.email,
+                    'phone': new_submission.phone,
+                    'website': new_submission.website,
+                    'created_at': new_submission.created_at.isoformat() if new_submission.created_at else None
+                })
+            except Exception as e:
+                logger.error(f"Google Chat notification failed: {e}")
         
         # Try to sync to Notion
         notion_success = False
