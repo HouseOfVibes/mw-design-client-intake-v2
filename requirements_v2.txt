@@ -1,15 +1,19 @@
 # MW Design Studio - Modern Client Intake System
-# FastAPI + Tailwind CSS + PostgreSQL Stack
+# FastAPI + PostgreSQL Stack
 
 # Core FastAPI Framework
-fastapi==0.104.1
+fastapi==0.110.0
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
 
+# Pydantic - Updated to a newer version with pre-compiled wheels
+pydantic[email]==2.7.1
+pydantic-settings==2.2.1
+
 # Database & ORM
-sqlalchemy==2.0.23
+sqlalchemy==2.0.25
 psycopg2-binary==2.9.9
-alembic==1.13.0
+alembic==1.13.1
 
 # Templates & Static Files
 jinja2==3.1.2
@@ -20,14 +24,11 @@ passlib[bcrypt]==1.7.4
 python-jose[cryptography]==3.3.0
 python-decouple==3.8
 
-# PDF Generation (Enhanced)
+# PDF Generation
 reportlab==4.0.7
-weasyprint==60.2
-fpdf2==2.7.6
 
-# Email & Communication
+# Email Validation
 email-validator==2.1.0
-pydantic[email]==2.5.0
 
 # Development & Production
 python-dotenv==1.0.0
@@ -37,6 +38,14 @@ gunicorn==21.2.0
 httpx==0.25.2
 requests==2.31.0
 
+# Google API Integration
+google-api-python-client==2.110.0
+google-auth-httplib2==0.1.1
+google-auth-oauthlib==1.2.0
+
 # Utilities
 python-dateutil==2.8.2
 pytz==2023.3
+itsdangerous==2.1.2
+werkzeug==3.0.1
+markupsafe==2.1.3
