@@ -31,9 +31,15 @@ try:
     from google_chat_notifier import GoogleChatNotifier
     chat_notifier = GoogleChatNotifier()
     CHAT_AVAILABLE = True
-except ImportError:
+    print("✅ Google Chat integration enabled")
+except ImportError as e:
     CHAT_AVAILABLE = False
-    print("Google Chat notifier not available.")
+    chat_notifier = None
+    print(f"⚠️  Google Chat notifier not available: {e}")
+except Exception as e:
+    CHAT_AVAILABLE = False
+    chat_notifier = None
+    print(f"❌ Google Chat integration failed: {e}")
 
 # Load environment variables
 load_dotenv()
@@ -296,7 +302,7 @@ def submit_form():
         db.session.commit()
         
         # Send Google Chat notification
-        if CHAT_AVAILABLE:
+        if CHAT_AVAILABLE and chat_notifier:
             try:
                 chat_notifier.send_new_submission_sync({
                     'id': new_submission.id,
