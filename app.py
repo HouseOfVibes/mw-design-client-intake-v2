@@ -57,7 +57,9 @@ if not database_url:
 
 # Fix for SQLAlchemy - Render uses postgres:// but SQLAlchemy needs postgresql://
 if database_url.startswith('postgres://'):
-    database_url = database_url.replace('postgres://', 'postgresql://', 1)
+    database_url = database_url.replace('postgres://', 'postgresql+psycopg://', 1)
+elif database_url.startswith('postgresql://'):
+    database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 print(f"🔗 Database URL: {database_url[:50]}...")  # Debug print
