@@ -17,7 +17,7 @@ class Submission(db.Model):
     social_media = db.Column(db.String(255))
     follower_counts = db.Column(db.String(255))
     management = db.Column(db.String(255))
-    goals = db.Column(db.ARRAY(db.Text))
+    goals = db.Column(db.Text)  # Store as JSON string
     kpi = db.Column(db.String(255))
     paid_ads = db.Column(db.String(255))
     timeline = db.Column(db.String(255))
@@ -25,7 +25,7 @@ class Submission(db.Model):
     problems_solutions = db.Column(db.Text)
     brand_voice = db.Column(db.String(255))
     content_tone = db.Column(db.String(255))
-    platforms = db.Column(db.ARRAY(db.Text))
+    platforms = db.Column(db.Text)  # Store as JSON string
     management_type = db.Column(db.String(255))
     existing_content = db.Column(db.String(255))
     content_writing = db.Column(db.String(255))
