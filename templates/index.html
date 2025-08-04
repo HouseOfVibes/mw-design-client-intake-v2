@@ -29,28 +29,44 @@
         .container {
             max-width: 900px;
             margin: 0 auto;
+        }
+
+        .form-wrapper {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             overflow: hidden;
         }
 
-        .header {
+        .mw-header {
             background: var(--mw-gradient);
             color: white;
-            padding: 40px;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
-        .header h1 {
+        .mw-logo {
+            max-height: 200px;
+            width: auto;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+        }
+
+        .mw-header h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin-bottom: 1rem;
             font-weight: 700;
         }
 
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+        .mw-header .lead {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .mw-header .opacity-75 {
+            opacity: 0.75;
+            font-size: 1rem;
         }
 
         .form-container {
@@ -216,14 +232,20 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>MW Design Studio</h1>
-            <p>Social Media Client Intake Form</p>
+    <!-- MW Design Studio Header -->
+    <div class="mw-header">
+        <div class="container">
+            <img src="{{ url_for('static', filename='mw_logo.png') }}" alt="MW Design Studio" class="mw-logo">
+            <h1>Social Media Client Intake Form</h1>
+            <p class="lead">Help us understand your brand so we can create the perfect social media strategy for you</p>
+            <p class="opacity-75">Professional Social Media Management & Strategy</p>
         </div>
+    </div>
 
-        <div class="form-container">
-            <form method="post" action="{{ url_for('submit_form') }}">
+    <div class="container">
+        <div class="form-wrapper">
+            <div class="form-container">
+                <form method="post" action="{{ url_for('submit_form') }}">
                 
                 <!-- Business & Brand Information -->
                 <div class="section">
@@ -603,6 +625,7 @@
                     </div>
                 </div>
             </form>
+            </div>
         </div>
     </div>
 </body>
