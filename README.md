@@ -17,12 +17,11 @@ A comprehensive Flask-based web application for collecting social media client i
 - **📝 Internal Notes**: Team collaboration with internal submission notes
 - **📤 CSV Export**: Export data for reporting or external tools
 
-### **Notion Integration** 
-- **🔄 Automatic Sync**: Every form submission creates a Notion database page
-- **📊 Client Portal**: Use Notion as a professional client portal with views, filters, and collaboration
-- **✅ Sync Status Tracking**: Monitor which submissions are synced successfully
-- **🔧 Manual Sync**: Retry failed syncs or sync existing submissions
-- **⚠️ Error Handling**: Graceful fallback when Notion is unavailable
+### **Integrations**
+- **💬 Google Chat Notifications**: Instant team alerts when new forms are submitted
+- **🔄 Notion Integration**: (Optional) Sync submissions to Notion database - currently disabled due to deployment optimization
+- **📤 CSV Export**: Export all submission data for external analysis
+- **⚠️ Graceful Degradation**: App works perfectly even if integrations are unavailable
 
 ## 🚀 Quick Start
 
@@ -45,9 +44,12 @@ pip install -r requirements.txt
 SECRET_KEY=your-secret-key-here
 DATABASE_URL=postgresql://username:password@localhost/dbname
 
-# Notion Integration (Optional)
-NOTION_TOKEN=secret_xxxxxxxxxxxxx
-NOTION_DB_ID=xxxxxxxxxx
+# Google Chat Integration (Optional)
+GOOGLE_CHAT_WEBHOOK_URL=https://chat.googleapis.com/v1/spaces/your-webhook-url
+
+# Notion Integration (Optional - currently disabled)
+# NOTION_TOKEN=secret_xxxxxxxxxxxxx
+# NOTION_DB_ID=xxxxxxxxxx
 
 # Email Settings (Optional)
 SMTP_SERVER=smtp.gmail.com
@@ -78,13 +80,31 @@ python app.py
 ```env
 SECRET_KEY=your-random-secret-key
 DATABASE_URL=(provided by Render PostgreSQL)
-NOTION_TOKEN=secret_xxxxxxxxxxxxx (optional)
-NOTION_DB_ID=your-database-id (optional)
+GOOGLE_CHAT_WEBHOOK_URL=https://chat.googleapis.com/v1/spaces/your-webhook-url (optional)
+# NOTION_TOKEN=secret_xxxxxxxxxxxxx (currently disabled)
+# NOTION_DB_ID=your-database-id (currently disabled)
 ```
 
-## 🗄️ Notion Setup (Optional)
+## 💬 Google Chat Setup (Optional)
 
-### 1. Create Notion Database
+### 1. Create Google Chat Webhook
+1. Open Google Chat and go to the space where you want notifications
+2. Click the space name → "Apps & integrations" → "Add webhooks"
+3. Name it "MW Design Studio Notifications"
+4. Copy the webhook URL
+5. Set the `GOOGLE_CHAT_WEBHOOK_URL` environment variable
+
+### 2. Test Notifications
+When forms are submitted, you'll receive rich notifications with:
+- Business name and contact details
+- Submission timestamp
+- Direct links to manage the submission
+
+## 🗄️ Notion Setup (Currently Disabled)
+
+*Note: Notion integration is temporarily disabled to avoid deployment compilation issues. It can be re-enabled in future updates.*
+
+### 1. Create Notion Database (For Future Use)
 Create a database with these properties:
 - **Business Name** (Title)
 - **Contact Person** (Text)
@@ -166,8 +186,8 @@ Your beautiful MW Design Studio palette:
 - `GET /submission/<id>` - Detailed submission view
 - `POST /admin/submission/<id>/update-status` - Update submission status
 - `GET /admin/export/csv` - Export submissions to CSV
-- `POST /admin/notion/sync-all` - Sync all unsynced submissions
-- `POST /admin/notion/sync/<id>` - Sync single submission
+- `POST /admin/notion/sync-all` - Sync all unsynced submissions (disabled)
+- `POST /admin/notion/sync/<id>` - Sync single submission (disabled)
 
 ### System
 - `GET /health` - Health check for monitoring
@@ -188,11 +208,11 @@ Admin authentication with role-based access
 
 ## 🔄 Workflow
 
-1. **Client submits form** → Creates database record + PDF download
-2. **Auto-sync to Notion** → Creates client portal page (if configured)
-3. **Admin manages** → Update status, add notes, track progress
-4. **Team collaboration** → Use Notion for client communication and project management
-5. **Export data** → CSV reports for analysis or external tools
+1. **Client submits form** → Creates database record + sends Google Chat notification
+2. **Team gets notified** → Instant Google Chat alert with client details
+3. **Admin manages** → Login to dashboard, update status, add notes, track progress
+4. **Export data** → CSV reports for analysis or external tools
+5. **Future integration** → Notion sync can be re-enabled when needed
 
 ## 🛠️ Development
 
