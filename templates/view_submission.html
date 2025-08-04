@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MW Design Studio - View Submission</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg gradient-background">
+        <div class="container">
+            <a class="navbar-brand header-font text-white" href="{{ url_for('dashboard') }}">
+                <i class="fas fa-chart-line me-2"></i>MW Design Studio Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link text-white" href="{{ url_for('submissions_list') }}">
+                    <i class="fas fa-list me-1"></i>All Submissions
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('dashboard') }}">
+                    <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                </a>
+                <a class="nav-link text-white" href="{{ url_for('logout') }}">
+                    <i class="fas fa-sign-out-alt me-1"></i>Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2><i class="fas fa-file-alt me-2"></i>Submission Details</h2>
+                            <small class="text-muted">ID: #{{ submission.id }}</small>
+                        </div>
+                        <div>
+                            <a href="{{ url_for('download_pdf', submission_id=submission.id) }}" class="btn btn-secondary me-2">
+                                <i class="fas fa-file-pdf me-1"></i>Download PDF
+                            </a>
+                            <a href="{{ url_for('submissions_list') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-arrow-left me-1"></i>Back to List
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Information -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5><i class="fas fa-building me-2"></i>Business Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Business Name:</strong></div>
+                            <div class="col-sm-8">{{ submission.business_name or 'Not provided' }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Contact Name:</strong></div>
+                            <div class="col-sm-8">{{ submission.contact_name or 'Not provided' }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Email:</strong></div>
+                            <div class="col-sm-8">
+                                {% if submission.email %}
+                                    <a href="mailto:{{ submission.email }}">{{ submission.email }}</a>
+                                {% else %}
+                                    Not provided
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Phone:</strong></div>
+                            <div class="col-sm-8">
+                                {% if submission.phone %}
+                                    <a href="tel:{{ submission.phone }}">{{ submission.phone }}</a>
+                                {% else %}
+                                    Not provided
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Website:</strong></div>
+                            <div class="col-sm-8">
+                                {% if submission.website %}
+                                    <a href="{{ submission.website }}" target="_blank">{{ submission.website }}</a>
+                                {% else %}
+                                    Not provided
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Industry:</strong></div>
+                            <div class="col-sm-8">{{ submission.industry or 'Not provided' }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Company Size:</strong></div>
+                            <div class="col-sm-8">{{ submission.company_size or 'Not provided' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5><i class="fas fa-dollar-sign me-2"></i>Project Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Budget:</strong></div>
+                            <div class="col-sm-8">
+                                {% if submission.budget %}
+                                    <span class="badge bg-success">{{ submission.budget }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Not specified</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Timeline:</strong></div>
+                            <div class="col-sm-8">{{ submission.timeline or 'Not provided' }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Start Date:</strong></div>
+                            <div class="col-sm-8">{{ submission.start_date or 'Not provided' }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Posting Frequency:</strong></div>
+                            <div class="col-sm-8">{{ submission.posting_frequency or 'Not provided' }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Approval Level:</strong></div>
+                            <div class="col-sm-8">{{ submission.approval_level or 'Not provided' }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-4"><strong>Submitted:</strong></div>
+                            <div class="col-sm-8">
+                                <small class="text-muted">
+                                    {{ submission.created_at.strftime('%B %d, %Y at %I:%M %p') if submission.created_at else 'N/A' }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business Description -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-info-circle me-2"></i>Business Description</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Products/Services:</strong>
+                                <p class="mt-2">{{ submission.products_services or 'Not provided' }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Brand Story:</strong>
+                                <p class="mt-2">{{ submission.brand_story or 'Not provided' }}</p>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <strong>Unique Selling Proposition:</strong>
+                                <p class="mt-2">{{ submission.usp or 'Not provided' }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <strong>Slogan/Tagline:</strong>
+                                <p class="mt-2">{{ submission.slogan or 'Not provided' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media & Goals -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5><i class="fas fa-bullseye me-2"></i>Goals & Objectives</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Primary Goals:</strong>
+                            <div class="mt-2">
+                                {% if submission.goals %}
+                                    {% for goal in submission.goals %}
+                                        <span class="badge bg-primary me-1 mb-1">{{ goal }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <strong>KPIs to Track:</strong>
+                            <p class="mt-2">{{ submission.kpis or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Paid Advertising:</strong>
+                            <p class="mt-2">{{ submission.paid_ads or 'Not provided' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5><i class="fas fa-share-alt me-2"></i>Social Media Platforms</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Platforms to Manage:</strong>
+                            <div class="mt-2">
+                                {% if submission.platforms %}
+                                    {% for platform in submission.platforms %}
+                                        <span class="badge bg-info me-1 mb-1">{{ platform }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted">Not provided</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Current Social Handles:</strong>
+                            <p class="mt-2">{{ submission.social_handles or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Follower Counts:</strong>
+                            <p class="mt-2">{{ submission.follower_counts or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Current Management:</strong>
+                            <p class="mt-2">{{ submission.social_management or 'Not provided' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Target Audience & Brand -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5><i class="fas fa-users me-2"></i>Target Audience</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Ideal Customer:</strong>
+                            <p class="mt-2">{{ submission.ideal_customer or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Demographics:</strong>
+                            <p class="mt-2">{{ submission.demographics or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Problems & Solutions:</strong>
+                            <p class="mt-2">{{ submission.problems_solutions or 'Not provided' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5><i class="fas fa-palette me-2"></i>Brand & Content</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Brand Voice:</strong>
+                            <p class="mt-2">{{ submission.brand_voice or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Content Tone:</strong>
+                            <p class="mt-2">{{ submission.content_tone or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Brand Words/Phrases:</strong>
+                            <p class="mt-2">{{ submission.brand_words or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Brand Colors:</strong>
+                            <p class="mt-2">{{ submission.brand_colors or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Brand Fonts:</strong>
+                            <p class="mt-2">{{ submission.brand_fonts or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Logo Status:</strong>
+                            <p class="mt-2">{{ submission.logo_status or 'Not provided' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content & Competition -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5><i class="fas fa-edit me-2"></i>Content Strategy</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Posting Approach:</strong>
+                            <p class="mt-2">{{ submission.posting_approach or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Content Availability:</strong>
+                            <p class="mt-2">{{ submission.content_availability or 'Not provided' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h5><i class="fas fa-trophy me-2"></i>Competition & Inspiration</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <strong>Competitors:</strong>
+                            <p class="mt-2">{{ submission.competitors or 'Not provided' }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <strong>Inspiration Accounts:</strong>
+                            <p class="mt-2">{{ submission.inspiration_accounts or 'Not provided' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Information -->
+        {% if submission.social_challenges or submission.questions_about_services or submission.additional_info %}
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-plus-circle me-2"></i>Additional Information</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if submission.social_challenges %}
+                        <div class="mb-3">
+                            <strong>Social Media Challenges:</strong>
+                            <p class="mt-2">{{ submission.social_challenges }}</p>
+                        </div>
+                        {% endif %}
+                        {% if submission.questions_about_services %}
+                        <div class="mb-3">
+                            <strong>Questions About Services:</strong>
+                            <p class="mt-2">{{ submission.questions_about_services }}</p>
+                        </div>
+                        {% endif %}
+                        {% if submission.additional_info %}
+                        <div class="mb-3">
+                            <strong>Additional Details:</strong>
+                            <p class="mt-2">{{ submission.additional_info }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Admin Actions -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cogs me-2"></i>Admin Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('update_submission_status', submission_id=submission.id) }}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="form-label">Status</label>
+                                    <select name="status" class="form-select">
+                                        <option value="New" {{ 'selected' if submission.status == 'New' else '' }}>New</option>
+                                        <option value="Contacted" {{ 'selected' if submission.status == 'Contacted' else '' }}>Contacted</option>
+                                        <option value="Proposal Sent" {{ 'selected' if submission.status == 'Proposal Sent' else '' }}>Proposal Sent</option>
+                                        <option value="Won" {{ 'selected' if submission.status == 'Won' else '' }}>Won</option>
+                                        <option value="Lost" {{ 'selected' if submission.status == 'Lost' else '' }}>Lost</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Priority</label>
+                                    <select name="priority" class="form-select">
+                                        <option value="High" {{ 'selected' if submission.priority == 'High' else '' }}>High</option>
+                                        <option value="Medium" {{ 'selected' if submission.priority == 'Medium' else '' }}>Medium</option>
+                                        <option value="Low" {{ 'selected' if submission.priority == 'Low' else '' }}>Low</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">Internal Notes</label>
+                                    <textarea name="internal_notes" class="form-control" rows="1" placeholder="Add internal notes...">{{ submission.internal_notes or '' }}</textarea>
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary w-100">Update</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
