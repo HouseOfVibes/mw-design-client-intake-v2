@@ -5,25 +5,25 @@ A comprehensive Flask-based web application for collecting social media client i
 ## ✨ Features
 
 ### **Client Experience**
-- **📋 Comprehensive Intake Form**: 29-question form covering business info, goals, audience, brand voice, platforms, and content strategy
+- **Comprehensive Intake Form**: 29-question form covering business info, goals, audience, brand voice, platforms, and content strategy
 - **📄 Instant PDF Reports**: Professional branded intake summaries using WeasyPrint
-- **🎨 MW Design Studio Branding**: Beautiful gradient design with your brand colors
-- **📱 Responsive Design**: Works perfectly on desktop, tablet, and mobile
+- **MW Design Studio Branding**: Beautiful gradient design with your brand colors
+- **Responsive Design**: Works perfectly on desktop, tablet, and mobile
 
 ### **Admin Dashboard**
-- **📊 Analytics Dashboard**: Overview stats, recent submissions, and sync status
+- **Analytics Dashboard**: Overview stats, recent submissions, and sync status
 - **🔍 Advanced Search & Filtering**: Find submissions by status, business name, contact, or email
-- **📈 Status Management**: Track submissions through your workflow (New → In Progress → Completed)
+- **Status Management**: Track submissions through your workflow (New → In Progress → Completed)
 - **📝 Internal Notes**: Team collaboration with internal submission notes
-- **📤 CSV Export**: Export data for reporting or external tools
+- **CSV Export**: Export data for reporting or external tools
 
 ### **Integrations**
 - **💬 Google Chat Notifications**: Instant team alerts when new forms are submitted
-- **🔄 Notion Integration**: (Optional) Sync submissions to Notion database - currently disabled due to deployment optimization
-- **📤 CSV Export**: Export all submission data for external analysis
-- **⚠️ Graceful Degradation**: App works perfectly even if integrations are unavailable
+- **Notion Integration**: (Optional) Sync submissions to Notion database - currently disabled due to deployment optimization
+- **CSV Export**: Export all submission data for external analysis
+- **Graceful Degradation**: App works perfectly even if integrations are unavailable
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.8+
@@ -100,7 +100,7 @@ When forms are submitted, you'll receive rich notifications with:
 - Submission timestamp
 - Direct links to manage the submission
 
-## 🗄️ Notion Setup (Currently Disabled)
+## Notion Setup (Currently Disabled)
 
 *Note: Notion integration is temporarily disabled to avoid deployment compilation issues. It can be re-enabled in future updates.*
 
@@ -139,7 +139,7 @@ Create a database with these properties:
 2. Click "..." → "Connections" → "Connect to" → Select your integration
 3. Copy the database ID from the URL (32-character string)
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 mw-design-client-intake/
@@ -162,7 +162,7 @@ mw-design-client-intake/
     └── register.html                # User registration
 ```
 
-## 🎨 Brand Colors
+## Brand Colors
 
 Your beautiful MW Design Studio palette:
 - **Midnight Blue**: `#0D273E`
@@ -206,7 +206,7 @@ Complete client intake data including:
 ### User
 Admin authentication with role-based access
 
-## 🔄 Workflow
+## Workflow
 
 1. **Client submits form** → Creates database record + sends Google Chat notification
 2. **Team gets notified** → Instant Google Chat alert with client details
@@ -214,7 +214,7 @@ Admin authentication with role-based access
 4. **Export data** → CSV reports for analysis or external tools
 5. **Future integration** → Notion sync can be re-enabled when needed
 
-## 🛠️ Development
+## Development
 
 ### Adding New Features
 1. Fork the repository
@@ -247,4 +247,4 @@ Admin authentication with role-based access
 
 ---
 
-**Ready to transform your client intake process with professional PDFs and seamless Notion integration!** 🚀
+**Ready to transform your client intake process with professional PDFs and seamless Notion integration!**

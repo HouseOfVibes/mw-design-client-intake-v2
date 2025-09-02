@@ -20,13 +20,13 @@ def create_icons():
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
     
-    print("🎨 MW Design Studio PWA Icon Generator")
+    print("MW Design Studio PWA Icon Generator")
     print("=" * 50)
     
     try:
         # Open the original logo
         with Image.open(input_logo) as original:
-            print(f"✅ Original logo loaded: {original.size}")
+            print(f"Original logo loaded: {original.size}")
             
             # Convert to RGBA if not already
             if original.mode != 'RGBA':
@@ -51,10 +51,10 @@ def create_icons():
                 filepath = os.path.join(output_dir, filename)
                 icon.save(filepath, "PNG", optimize=True)
                 
-                print(f"  ✅ Generated {filename} ({size}x{size})")
+                print(f"  Generated {filename} ({size}x{size})")
             
             # Create special maskable icon (for Android)
-            print("\n🎯 Creating maskable icon...")
+            print("\nCreating maskable icon...")
             maskable_size = 512
             maskable = Image.new('RGBA', (maskable_size, maskable_size), (30, 58, 138, 255))  # MW brand color
             
@@ -70,7 +70,7 @@ def create_icons():
             # Save maskable icon
             maskable_path = os.path.join(output_dir, "icon-maskable-512x512.png")
             maskable.save(maskable_path, "PNG", optimize=True)
-            print(f"  ✅ Generated icon-maskable-512x512.png")
+            print(f"  Generated icon-maskable-512x512.png")
             
             # Create Apple touch icon (180x180)
             apple_icon = Image.new('RGBA', (180, 180), (0, 0, 0, 0))
@@ -83,24 +83,24 @@ def create_icons():
             
             apple_path = os.path.join(output_dir, "apple-touch-icon-180x180.png")
             apple_icon.save(apple_path, "PNG", optimize=True)
-            print(f"  ✅ Generated apple-touch-icon-180x180.png")
+            print(f"  Generated apple-touch-icon-180x180.png")
             
-            print("\n🎉 All PWA icons generated successfully!")
-            print(f"📁 Icons saved to: {output_dir}/")
-            print(f"📊 Total icons created: {len(icon_sizes) + 2}")
+            print("\nAll PWA icons generated successfully!")
+            print(f"Icons saved to: {output_dir}/")
+            print(f"Total icons created: {len(icon_sizes) + 2}")
             
             return True
             
     except FileNotFoundError:
-        print(f"❌ Error: Could not find logo file: {input_logo}")
+        print(f"ERROR: Could not find logo file: {input_logo}")
         return False
     except Exception as e:
-        print(f"❌ Error generating icons: {e}")
+        print(f"ERROR generating icons: {e}")
         return False
 
 if __name__ == "__main__":
     success = create_icons()
     if success:
-        print("\n✨ Your PWA is now ready for installation on all devices!")
+        print("\nYour PWA is now ready for installation on all devices!")
     else:
-        print("\n💥 Icon generation failed. Please check the error above.")
+        print("\nIcon generation failed. Please check the error above.")

@@ -31,15 +31,15 @@ try:
     from google_chat_notifier import GoogleChatNotifier
     chat_notifier = GoogleChatNotifier()
     CHAT_AVAILABLE = True
-    print("✅ Google Chat integration enabled")
+    print("Google Chat integration enabled")
 except ImportError as e:
     CHAT_AVAILABLE = False
     chat_notifier = None
-    print(f"⚠️  Google Chat notifier not available: {e}")
+    print(f"WARNING: Google Chat notifier not available: {e}")
 except Exception as e:
     CHAT_AVAILABLE = False
     chat_notifier = None
-    print(f"❌ Google Chat integration failed: {e}")
+    print(f"ERROR: Google Chat integration failed: {e}")
 
 # Load environment variables
 load_dotenv()
@@ -84,12 +84,12 @@ if NOTION_AVAILABLE:
     if notion_token and NOTION_DB_ID:
         try:
             notion_client = Client(auth=notion_token)
-            print("✅ Notion integration enabled")
+            print("Notion integration enabled")
         except Exception as e:
-            print(f"❌ Notion integration failed: {e}")
+            print(f"ERROR: Notion integration failed: {e}")
             notion_client = None
     else:
-        print("⚠️  Notion credentials not found. Integration disabled.")
+        print("WARNING: Notion credentials not found. Integration disabled.")
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -215,7 +215,7 @@ def create_notion_page(submission):
         
         db.session.commit()
         
-        logger.info(f"✅ Created Notion page {response['id']} for submission {submission.id}")
+        logger.info(f"Created Notion page {response['id']} for submission {submission.id}")
         return response
         
     except Exception as e:
@@ -245,7 +245,7 @@ def update_notion_page(submission):
         submission.notion_sync_error = None
         db.session.commit()
         
-        logger.info(f"✅ Updated Notion page {submission.notion_page_id}")
+        logger.info(f"Updated Notion page {submission.notion_page_id}")
         return response
         
     except Exception as e:

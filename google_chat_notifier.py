@@ -141,7 +141,7 @@ class GoogleChatNotifier:
             })
         
         sections.append({
-            "header": "📋 Business Information",
+            "header": "Business Information",
             "widgets": business_widgets
         })
         
@@ -188,7 +188,7 @@ class GoogleChatNotifier:
         
         if project_widgets:
             sections.append({
-                "header": "🎯 Project Details",
+                "header": "Project Details",
                 "widgets": project_widgets
             })
         
@@ -222,7 +222,7 @@ class GoogleChatNotifier:
         ]
         
         sections.append({
-            "header": "🚀 Quick Actions",
+            "header": "Quick Actions",
             "widgets": action_widgets
         })
         
@@ -232,7 +232,7 @@ class GoogleChatNotifier:
         """Send notification for new client submission"""
         try:
             # Create the main notification message
-            title = "🎉 New Client Submission Received!"
+            title = "New Client Submission Received!"
             subtitle = f"MW Design Studio • {datetime.now().strftime('%B %d, %Y at %I:%M %p')}"
             
             sections = self._format_submission_details(submission_data)
@@ -259,7 +259,7 @@ class GoogleChatNotifier:
                 "New": {"emoji": "🆕", "color": "#1E3A8A"},
                 "Contacted": {"emoji": "📞", "color": "#F59E0B"},
                 "Proposal Sent": {"emoji": "📄", "color": "#8B5CF6"},
-                "Won": {"emoji": "🎉", "color": "#10B981"},
+                "Won": {"emoji": "W", "color": "#10B981"},
                 "Lost": {"emoji": "😔", "color": "#EF4444"}
             }
             
@@ -271,7 +271,7 @@ class GoogleChatNotifier:
             # Create simplified sections for status updates
             sections = [
                 {
-                    "header": "📋 Client Information",
+                    "header": "Client Information",
                     "widgets": [
                         {
                             "keyValue": {
@@ -315,9 +315,9 @@ class GoogleChatNotifier:
         try:
             alert_configs = {
                 "error": {"emoji": "🚨", "color": "#EF4444"},
-                "warning": {"emoji": "⚠️", "color": "#F59E0B"},
-                "info": {"emoji": "ℹ️", "color": "#3B82F6"},
-                "success": {"emoji": "✅", "color": "#10B981"}
+                "warning": {"emoji": "!", "color": "#F59E0B"},
+                "info": {"emoji": "i", "color": "#3B82F6"},
+                "success": {"emoji": "+", "color": "#10B981"}
             }
             
             config = alert_configs.get(alert_type, alert_configs["info"])
@@ -327,7 +327,7 @@ class GoogleChatNotifier:
             
             sections = [
                 {
-                    "header": "📋 Alert Details",
+                    "header": "Alert Details",
                     "widgets": [
                         {
                             "textParagraph": {
@@ -402,7 +402,7 @@ class GoogleChatNotifier:
         test_message = {
             "text": f"🧪 MW Design Studio Webhook Test • {datetime.now().strftime('%B %d, %Y at %I:%M %p')}\n\n" +
                    "This is a test message to verify your Google Chat webhook is working correctly. " +
-                   "If you see this message, your webhook integration is properly configured! 🎉"
+                   "If you see this message, your webhook integration is properly configured!"
         }
         
         for webhook_key, webhook in self.webhooks.items():
