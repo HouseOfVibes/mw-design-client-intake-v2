@@ -1,7 +1,7 @@
 {
-  "name": "MW Design Studio - Client Intake",
-  "short_name": "MW Intake",
-  "description": "Professional client intake form for MW Design Studio brand design, photography, and marketing services",
+  "name": "MW Design Studio - Professional Brand Design & Marketing Services",
+  "short_name": "MW Design",
+  "description": "Transform your business with MW Design Studio's expert brand design, professional photography, and strategic marketing services. Complete our client intake form to get started.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#161b22",
