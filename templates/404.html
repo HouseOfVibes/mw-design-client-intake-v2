@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - MW Design Studio</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="The page you're looking for couldn't be found. Return to MW Design Studio's client intake form to get started with professional brand design and marketing services.">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Page Not Found - MW Design Studio">
+    <meta property="og:description" content="The page you're looking for couldn't be found. Return to MW Design Studio's client intake form.">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='mw_logo.png') }}">
+    
+    <style>
+        :root {
+            --mw-primary: #1E3A8A;
+            --mw-secondary: #20B2AA;
+            --mw-accent: #4FD1C7;
+            --mw-gradient: linear-gradient(135deg, var(--mw-primary) 0%, var(--mw-secondary) 50%, var(--mw-accent) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #161b22;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .error-container {
+            max-width: 600px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .error-logo {
+            max-height: 120px;
+            width: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .error-code {
+            font-size: 8rem;
+            font-weight: 700;
+            background: var(--mw-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            font-size: 2.5rem;
+            color: var(--mw-primary);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .error-message {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .error-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--mw-gradient);
+            color: white;
+            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(30, 58, 138, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--mw-secondary);
+            border: 2px solid var(--mw-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--mw-secondary);
+            color: white;
+        }
+
+        .help-text {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .contact-info a {
+            color: var(--mw-secondary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .error-container {
+                padding: 40px 20px;
+            }
+            
+            .error-code {
+                font-size: 6rem;
+            }
+            
+            .error-title {
+                font-size: 2rem;
+            }
+            
+            .error-message {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <img src="{{ url_for('static', filename='mw_logo.png') }}" alt="MW Design Studio Logo" class="error-logo">
+        
+        <div class="error-code">404</div>
+        
+        <h1 class="error-title">Page Not Found</h1>
+        
+        <p class="error-message">
+            We're sorry, but the page you're looking for doesn't exist or may have been moved. 
+            Let's get you back on track to transform your business with our professional design and marketing services.
+        </p>
+        
+        <div class="error-actions">
+            <a href="{{ url_for('home') }}" class="btn btn-primary">Return to Client Intake Form</a>
+            <button onclick="history.back()" class="btn btn-secondary">Go Back</button>
+        </div>
+        
+        <div class="help-text">
+            <p>Looking for something specific? Our client intake form will help us understand your needs for:</p>
+            <p><strong>Brand Design</strong> • <strong>Professional Photography</strong> • <strong>Marketing Services</strong></p>
+        </div>
+        
+        <div class="contact-info">
+            <p>Need help? Contact us at <a href="mailto:info@mwdesign.agency">info@mwdesign.agency</a></p>
+        </div>
+    </div>
+
+    <!-- Schema markup for 404 page -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Page Not Found - MW Design Studio",
+        "description": "The requested page could not be found on MW Design Studio website.",
+        "url": "{{ request.url }}",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "MW Design Studio",
+            "url": "{{ request.url_root }}"
+        }
+    }
+    </script>
+
+    <!-- Google Analytics tracking for 404 errors -->
+    <script>
+        // Track 404 errors in Google Analytics if gtag is available
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'page_view', {
+                'page_title': '404 - Page Not Found',
+                'page_location': window.location.href,
+                'content_group1': '404 Error'
+            });
+        }
+    </script>
+</body>
+</html>

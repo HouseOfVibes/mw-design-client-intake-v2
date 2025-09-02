@@ -1,0 +1,37 @@
+User-agent: *
+Allow: /
+Allow: /static/
+Allow: /health
+
+# Block admin and private areas
+Disallow: /admin/
+Disallow: /login
+Disallow: /logout
+Disallow: /dashboard
+Disallow: /submission/
+Disallow: /download_pdf/
+Disallow: /register
+
+# Allow specific static assets for SEO
+Allow: /static/mw_logo.png
+Allow: /static/manifest.json
+Allow: /static/icons/
+
+# Sitemap location
+Sitemap: https://mw-design-client-intake.onrender.com/sitemap.xml
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+# Additional directives for better SEO
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
