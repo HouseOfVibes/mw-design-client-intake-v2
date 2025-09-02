@@ -272,6 +272,42 @@ def health_check():
     """Health check endpoint for Render"""
     return {'status': 'healthy', 'service': 'MW Design Studio - Client Intake'}
 
+@app.route('/robots.txt')
+def robots_txt():
+    """Serve robots.txt for search engines"""
+    return send_file('static/robots.txt', mimetype='text/plain')
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    """Generate dynamic XML sitemap"""
+    from flask import Response
+    from datetime import datetime
+    
+    # Base URL for the site
+    base_url = request.url_root.rstrip('/')
+    
+    # Sitemap XML structure
+    xml_content = '''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+        <loc>{base_url}/</loc>
+        <lastmod>{date}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>{base_url}/health</loc>
+        <lastmod>{date}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+</urlset>'''.format(
+        base_url=base_url,
+        date=datetime.now().strftime('%Y-%m-%d')
+    )
+    
+    return Response(xml_content, mimetype='application/xml')
+
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
     try:
@@ -623,6 +659,17 @@ def register():
         flash('Registration successful! Please log in.', 'success')
         return redirect(url_for('login'))
     return render_template('register.html')
+
+# Error handlers for SEO and UX
+@app.errorhandler(404)
+def page_not_found(error):
+    """Custom 404 error page with proper SEO"""
+    return render_template('404.html'), 404
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    """Custom 500 error handler"""
+    return render_template('404.html'), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
