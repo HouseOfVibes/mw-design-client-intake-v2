@@ -43,6 +43,36 @@ class Submission(db.Model):
     phone = db.Column(db.String(255))
     additional_info = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    
+    # New comprehensive form fields
+    slogan = db.Column(db.Text)
+    social_handles = db.Column(db.Text)
+    social_management = db.Column(db.String(255))
+    kpis = db.Column(db.Text)
+    ideal_customer = db.Column(db.Text)
+    brand_words = db.Column(db.Text)
+    posting_approach = db.Column(db.String(255))
+    content_availability = db.Column(db.String(255))
+    industry = db.Column(db.String(255))
+    logo_status = db.Column(db.String(255))
+    start_date = db.Column(db.String(255))
+    approval_level = db.Column(db.String(255))
+    inspiration_accounts = db.Column(db.Text)
+    social_challenges = db.Column(db.Text)
+    questions_about_services = db.Column(db.Text)
+    
+    # New service-specific fields
+    services_needed = db.Column(db.Text)  # Store as JSON string
+    photography_type = db.Column(db.Text)  # Store as JSON string
+    photography_location = db.Column(db.String(255))
+    photography_timeline = db.Column(db.String(255))
+    brand_services = db.Column(db.Text)  # Store as JSON string
+    brand_stage = db.Column(db.String(255))
+    brand_priority = db.Column(db.String(255))
+    marketing_services = db.Column(db.Text)  # Store as JSON string
+    project_urgency = db.Column(db.String(255))
+    current_challenges = db.Column(db.Text)
+    success_measurement = db.Column(db.Text)
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
