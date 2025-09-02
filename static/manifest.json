@@ -1,7 +1,7 @@
 {
   "name": "MW Design Studio - Client Intake",
   "short_name": "MW Intake",
-  "description": "Professional social media client intake form for MW Design Studio",
+  "description": "Professional client intake form for MW Design Studio brand design, photography, and marketing services",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#161b22",
@@ -55,7 +55,13 @@
       "src": "/static/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable any"
+      "purpose": "any"
+    },
+    {
+      "src": "/static/icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "categories": ["business", "productivity", "utilities"],
