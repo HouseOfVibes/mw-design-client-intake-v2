@@ -3,10 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MW Design Studio - Client Project Intake Form</title>
+    <title>MW Design Studio - Professional Brand Design & Marketing Services | Client Intake Form</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Transform your business with MW Design Studio's expert brand design, professional photography, and strategic marketing services. Complete our client intake form to get started with custom solutions tailored to your goals.">
+    <meta name="keywords" content="brand design, logo design, professional photography, marketing services, SEO services, social media management, brand identity, business cards, brochures, content creation, brand strategy, graphic design, small business marketing">
+    <meta name="author" content="MW Design Studio">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://mw-design-client-intake.onrender.com/">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:site_name" content="MW Design Studio">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="MW Design Studio - Professional Brand Design & Marketing Services">
+    <meta property="og:description" content="Transform your business with expert brand design, professional photography, and strategic marketing services. Get custom solutions tailored to your business goals.">
+    <meta property="og:url" content="https://mw-design-client-intake.onrender.com/">
+    <meta property="og:image" content="{{ url_for('static', filename='mw_logo.png', _external=True) }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="MW Design Studio - Professional Brand Design & Marketing Services">
+    <meta name="twitter:description" content="Transform your business with expert brand design, professional photography, and strategic marketing services.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='mw_logo.png', _external=True) }}">
+    
+    <!-- Business Information Meta Tags -->
+    <meta name="geo.region" content="US">
+    <meta name="geo.placename" content="United States">
+    <meta name="business:contact_data:email" content="info@mwdesign.agency">
     
     <!-- PWA Meta Tags -->
-    <meta name="description" content="Professional client intake form for MW Design Studio. Complete our comprehensive form to get started with your custom brand design, photography, or marketing project.">
     <meta name="theme-color" content="#1E3A8A">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -295,10 +323,10 @@
     <!-- MW Design Studio Header -->
     <div class="mw-header">
         <div class="container">
-            <img src="{{ url_for('static', filename='mw_logo.png') }}" alt="MW Design Studio" class="mw-logo">
-            <h1>Client Intake Form</h1>
-            <p class="lead">Help us understand your brand and business needs so we can create the perfect custom solution for you</p>
-            <p class="opacity-75">Brand Design | Photography | Marketing Services</p>
+            <img src="{{ url_for('static', filename='mw_logo.png') }}" alt="MW Design Studio - Professional Brand Design, Photography & Marketing Services" class="mw-logo">
+            <h1>Professional Brand Design & Marketing Services Client Intake</h1>
+            <p class="lead">Transform your business with custom brand identity, professional photography, and strategic marketing solutions tailored to your goals</p>
+            <p class="opacity-75">Brand Design | Professional Photography | SEO & Marketing Services | Content Creation</p>
         </div>
     </div>
 
@@ -906,6 +934,119 @@
         </div>
     </div>
 
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Organization",
+                "@id": "https://mw-design-client-intake.onrender.com/#organization",
+                "name": "MW Design Studio",
+                "url": "https://mw-design-client-intake.onrender.com/",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "{{ url_for('static', filename='mw_logo.png', _external=True) }}"
+                },
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "email": "info@mwdesign.agency",
+                    "contactType": "customer service"
+                },
+                "sameAs": []
+            },
+            {
+                "@type": "LocalBusiness",
+                "@id": "https://mw-design-client-intake.onrender.com/#localbusiness",
+                "name": "MW Design Studio",
+                "image": "{{ url_for('static', filename='mw_logo.png', _external=True) }}",
+                "telephone": "+1-XXX-XXX-XXXX",
+                "email": "info@mwdesign.agency",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressCountry": "US"
+                },
+                "url": "https://mw-design-client-intake.onrender.com/",
+                "priceRange": "$500-$15000+",
+                "openingHours": "Mo-Fr 09:00-17:00",
+                "serviceArea": {
+                    "@type": "Country",
+                    "name": "United States"
+                }
+            },
+            {
+                "@type": "Service",
+                "@id": "https://mw-design-client-intake.onrender.com/#brandservices",
+                "name": "Brand Design Services",
+                "description": "Professional brand identity design including logo design, brand guidelines, and visual identity systems.",
+                "provider": {
+                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
+                },
+                "serviceType": "Brand Design",
+                "areaServed": "US"
+            },
+            {
+                "@type": "Service",
+                "@id": "https://mw-design-client-intake.onrender.com/#photography",
+                "name": "Professional Photography Services",
+                "description": "Professional photography services including headshots, product photography, brand photography, and event photography.",
+                "provider": {
+                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
+                },
+                "serviceType": "Photography",
+                "areaServed": "US"
+            },
+            {
+                "@type": "Service",
+                "@id": "https://mw-design-client-intake.onrender.com/#marketing",
+                "name": "Marketing Services",
+                "description": "Comprehensive marketing services including SEO, social media management, content creation, and digital marketing strategy.",
+                "provider": {
+                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
+                },
+                "serviceType": "Marketing",
+                "areaServed": "US"
+            },
+            {
+                "@type": "WebPage",
+                "@id": "https://mw-design-client-intake.onrender.com/#webpage",
+                "url": "https://mw-design-client-intake.onrender.com/",
+                "name": "MW Design Studio - Client Intake Form",
+                "description": "Professional client intake form for MW Design Studio's brand design, photography, and marketing services.",
+                "isPartOf": {
+                    "@id": "https://mw-design-client-intake.onrender.com/#website"
+                },
+                "about": {
+                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
+                },
+                "primaryImageOfPage": {
+                    "@type": "ImageObject",
+                    "url": "{{ url_for('static', filename='mw_logo.png', _external=True) }}"
+                }
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://mw-design-client-intake.onrender.com/#website",
+                "url": "https://mw-design-client-intake.onrender.com/",
+                "name": "MW Design Studio",
+                "description": "Professional brand design, photography, and marketing services for businesses.",
+                "publisher": {
+                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
+                }
+            }
+        ]
+    }
+    </script>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    
     <!-- PWA Service Worker Registration -->
     <script>
         // Register Service Worker for PWA functionality
