@@ -351,6 +351,19 @@ def submit_form():
             social_challenges=request.form.get('social_challenges'),
             questions_about_services=request.form.get('questions_about_services'),
             additional_info=request.form.get('additional_info'),
+            
+            # New service-specific fields
+            services_needed=','.join(request.form.getlist('services_needed')),
+            photography_type=','.join(request.form.getlist('photography_type')),
+            photography_location=request.form.get('photography_location'),
+            photography_timeline=request.form.get('photography_timeline'),
+            brand_services=','.join(request.form.getlist('brand_services')),
+            brand_stage=request.form.get('brand_stage'),
+            brand_priority=request.form.get('brand_priority'),
+            marketing_services=','.join(request.form.getlist('marketing_services')),
+            project_urgency=request.form.get('project_urgency'),
+            current_challenges=request.form.get('current_challenges'),
+            success_measurement=request.form.get('success_measurement'),
         )
         
         db.session.add(new_submission)
@@ -389,40 +402,13 @@ def submit_form():
         logger.error(f'Error submitting form: {e}')
         flash(f'Error submitting form: {e}', 'danger')
 
-    # Generate and return PDF as before
-    html = render_template('client_intake_strategy.html', 
-                          business_name=new_submission.business_name,
-                          contact_name=new_submission.contact_name,
-                          email=new_submission.email,
-                          website=new_submission.website,
-                          created_at=new_submission.created_at,
-                          products_services=new_submission.products_services,
-                          usp=new_submission.usp,
-                          brand_story=new_submission.brand_story,
-                          social_media=new_submission.social_media,
-                          goals=new_submission.goals,
-                          kpi=new_submission.kpi,
-                          paid_ads=new_submission.paid_ads,
-                          timeline=new_submission.timeline,
-                          demographics=new_submission.demographics,
-                          problems_solutions=new_submission.problems_solutions,
-                          brand_voice=new_submission.brand_voice,
-                          content_tone=new_submission.content_tone,
-                          platforms=new_submission.platforms,
-                          management_type=new_submission.management_type,
-                          existing_content=new_submission.existing_content,
-                          content_writing=new_submission.content_writing,
-                          brand_colors=new_submission.brand_colors,
-                          brand_fonts=new_submission.brand_fonts,
-                          competitors=new_submission.competitors,
-                          inspiration=new_submission.inspiration,
-                          additional_info=new_submission.additional_info)
-    
-    pdf = HTML(string=html).write_pdf()
-    response = make_response(pdf)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = f'attachment; filename={secure_filename(new_submission.business_name or "client")}_intake.pdf'
-    return response
+    # Redirect to success page instead of generating PDF
+    return redirect(url_for('submission_success'))
+
+@app.route('/success')
+def submission_success():
+    """Display success page after form submission"""
+    return render_template('submission_success.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

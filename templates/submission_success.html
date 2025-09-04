@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Successful - MW Design Studio</title>
+    <meta name="description" content="Thank you for submitting your client intake form. MW Design Studio will contact you soon to discuss your project.">
+    <style>
+        :root {
+            --mw-primary: #1E3A8A;
+            --mw-secondary: #20B2AA;
+            --mw-accent: #4FD1C7;
+            --mw-gradient: linear-gradient(135deg, var(--mw-primary) 0%, var(--mw-secondary) 50%, var(--mw-accent) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #161b22;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-container {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .success-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .success-header {
+            background: var(--mw-gradient);
+            color: white;
+            padding: 3rem 2rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .success-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .success-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .success-body {
+            padding: 3rem 2rem;
+        }
+
+        .success-body h2 {
+            color: var(--mw-primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .success-body p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .next-steps {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .next-steps h3 {
+            color: var(--mw-primary);
+            margin-bottom: 1rem;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .next-steps li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .next-steps li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--mw-secondary);
+            font-weight: bold;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--mw-gradient);
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--mw-primary);
+            border: 2px solid var(--mw-primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--mw-primary);
+            color: white;
+        }
+
+        .contact-info {
+            background: var(--mw-gradient);
+            color: white;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .success-header {
+                padding: 2rem 1rem;
+            }
+            
+            .success-header h1 {
+                font-size: 2rem;
+            }
+            
+            .success-body {
+                padding: 2rem 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-card">
+            <div class="success-header">
+                <span class="success-icon">✓</span>
+                <h1>Thank You!</h1>
+                <p>Your client intake form has been submitted successfully</p>
+            </div>
+            
+            <div class="success-body">
+                <h2>What Happens Next?</h2>
+                <p>We've received your comprehensive project details and will review everything carefully to create the perfect solution for your business needs.</p>
+                
+                <div class="next-steps">
+                    <h3>Next Steps:</h3>
+                    <ul>
+                        <li>We'll review your submission within 24-48 hours</li>
+                        <li>Our team will analyze your project requirements</li>
+                        <li>You'll receive a personalized proposal via email</li>
+                        <li>We'll schedule a consultation call to discuss details</li>
+                        <li>Upon approval, we'll begin your project immediately</li>
+                    </ul>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="{{ url_for('home') }}" class="btn btn-secondary">Submit Another Form</a>
+                    <a href="mailto:info@mwdesign.agency" class="btn btn-primary">Contact Us Directly</a>
+                </div>
+            </div>
+            
+            <div class="contact-info">
+                <h3>Questions? We're Here to Help!</h3>
+                <p>
+                    Email: <a href="mailto:info@mwdesign.agency">info@mwdesign.agency</a><br>
+                    We typically respond within 4-6 hours during business days.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
