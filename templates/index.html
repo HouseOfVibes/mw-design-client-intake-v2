@@ -288,6 +288,156 @@
             text-decoration: underline;
         }
 
+        /* Multi-page form styles */
+        .form-page {
+            display: none;
+        }
+        
+        .form-page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .progress-container {
+            background: white;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #e1e8ed;
+            z-index: 1;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            height: 4px;
+            background: var(--mw-gradient);
+            z-index: 2;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        
+        .progress-line.step-2 {
+            width: 100%;
+        }
+        
+        .progress-step {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            flex: 1;
+        }
+        
+        .progress-step-number {
+            width: 40px;
+            height: 40px;
+            background: #e1e8ed;
+            color: #999;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active .progress-step-number,
+        .progress-step.completed .progress-step-number {
+            background: var(--mw-gradient);
+            color: white;
+        }
+        
+        .progress-step-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .progress-step.active .progress-step-label {
+            color: var(--mw-primary);
+            font-weight: 600;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn.prev {
+            background: white;
+            color: var(--mw-primary);
+            border: 2px solid var(--mw-primary);
+        }
+        
+        .nav-btn.prev:hover {
+            background: var(--mw-primary);
+            color: white;
+        }
+        
+        .nav-btn.next {
+            background: var(--mw-gradient);
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
+        }
+        
+        .nav-btn.next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .nav-btn.hidden {
+            visibility: hidden;
+        }
+
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
@@ -333,7 +483,25 @@
     <div class="container">
         <div class="form-wrapper">
             <div class="form-container">
-                <form method="post" action="{{ url_for('submit_form') }}">
+                <!-- Progress Indicator -->
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-line" id="progressLine"></div>
+                        <div class="progress-step active" id="step1">
+                            <div class="progress-step-number">1</div>
+                            <div class="progress-step-label">Business Information</div>
+                        </div>
+                        <div class="progress-step" id="step2">
+                            <div class="progress-step-number">2</div>
+                            <div class="progress-step-label">Project Details</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <form method="post" action="{{ url_for('submit_form') }}" id="intakeForm">
+                
+                <!-- PAGE 1: Business Information -->
+                <div class="form-page active" id="page1">
                 
                 <!-- Business & Brand Information -->
                 <div class="section">
@@ -518,6 +686,11 @@
                         <textarea id="problems_solutions" name="problems_solutions" required></textarea>
                     </div>
                 </div>
+                
+                </div> <!-- End of Page 1 -->
+                
+                <!-- PAGE 2: Project Details -->
+                <div class="form-page" id="page2">
 
                 <!-- Brand Voice & Personality -->
                 <div class="section">
@@ -908,12 +1081,18 @@
                         <textarea id="additional_info" name="additional_info" placeholder="Anything else we should know about your business, goals, or project requirements?"></textarea>
                     </div>
                 </div>
+                
+                </div> <!-- End of Page 2 -->
 
-                <div class="submit-container">
-                    <button type="submit" class="submit-btn">Submit Intake Form</button>
-                    <div class="admin-link">
-                        <a href="{{ url_for('login') }}">Admin Login</a>
-                    </div>
+                <!-- Navigation Buttons -->
+                <div class="form-navigation">
+                    <button type="button" class="nav-btn prev hidden" id="prevBtn" onclick="changePage(-1)">Previous</button>
+                    <button type="button" class="nav-btn next" id="nextBtn" onclick="changePage(1)">Next</button>
+                    <button type="submit" class="submit-btn" id="submitBtn" style="display:none;">Submit Intake Form</button>
+                </div>
+                
+                <div class="admin-link" style="text-align:center; margin-top:20px;">
+                    <a href="{{ url_for('login') }}">Admin Login</a>
                 </div>
             </form>
             </div>
@@ -1219,6 +1398,108 @@
             
             // Initial check
             updateNetworkStatus();
+        });
+        
+        // Multi-page form functionality
+        let currentPage = 1;
+        const totalPages = 2;
+        
+        function changePage(direction) {
+            // Validate current page before moving forward
+            if (direction === 1) {
+                if (!validateCurrentPage()) {
+                    return;
+                }
+            }
+            
+            // Hide current page
+            document.getElementById(`page${currentPage}`).classList.remove('active');
+            document.getElementById(`step${currentPage}`).classList.remove('active');
+            
+            // Update current page
+            currentPage += direction;
+            
+            // Show new page
+            document.getElementById(`page${currentPage}`).classList.add('active');
+            document.getElementById(`step${currentPage}`).classList.add('active');
+            
+            // Update progress bar
+            updateProgressBar();
+            
+            // Update navigation buttons
+            updateNavigationButtons();
+            
+            // Scroll to top of form
+            document.querySelector('.form-wrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function updateProgressBar() {
+            const progressLine = document.getElementById('progressLine');
+            if (currentPage === 1) {
+                progressLine.classList.remove('step-2');
+                document.getElementById('step1').classList.add('active');
+                document.getElementById('step2').classList.remove('active');
+            } else if (currentPage === 2) {
+                progressLine.classList.add('step-2');
+                document.getElementById('step1').classList.add('completed');
+                document.getElementById('step1').classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+            }
+        }
+        
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Show/hide previous button
+            if (currentPage === 1) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            // Show next or submit button
+            if (currentPage === totalPages) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'inline-block';
+            } else {
+                nextBtn.style.display = 'inline-block';
+                submitBtn.style.display = 'none';
+            }
+        }
+        
+        function validateCurrentPage() {
+            const currentPageElement = document.getElementById(`page${currentPage}`);
+            const requiredFields = currentPageElement.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('error');
+                    field.style.borderColor = '#e74c3c';
+                    isValid = false;
+                    
+                    // Remove error styling after user starts typing
+                    field.addEventListener('input', function() {
+                        this.style.borderColor = '';
+                    });
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            
+            if (!isValid) {
+                alert('Please fill in all required fields before proceeding.');
+            }
+            
+            return isValid;
+        }
+        
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            updateNavigationButtons();
+            updateProgressBar();
         });
     </script>
 </body>
