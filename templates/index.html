@@ -729,8 +729,8 @@
                 </div>
 
                 <!-- Photography Services -->
-                <div class="section">
-                    <h2 class="section-title">Photography Services (if selected)</h2>
+                <div class="section" id="photography-section" style="display:none;">
+                    <h2 class="section-title">Photography Services</h2>
                     
                     <div class="form-group">
                         <label>What type of photography do you need? (Check all that apply)</label>
@@ -786,8 +786,8 @@
                 </div>
 
                 <!-- Brand Services -->
-                <div class="section">
-                    <h2 class="section-title">Brand Services (if selected)</h2>
+                <div class="section" id="brand-services-section" style="display:none;">
+                    <h2 class="section-title">Brand Services</h2>
                     
                     <div class="form-group">
                         <label>Which brand services do you need? (Check all that apply)</label>
@@ -852,8 +852,8 @@
                 </div>
 
                 <!-- Marketing Services -->
-                <div class="section">
-                    <h2 class="section-title">Marketing Services (if selected)</h2>
+                <div class="section" id="marketing-services-section" style="display:none;">
+                    <h2 class="section-title">Marketing Services</h2>
                     
                     <div class="form-group">
                         <label>Which marketing services interest you? (Check all that apply)</label>
@@ -891,8 +891,8 @@
                 </div>
 
                 <!-- Platform Preferences -->
-                <div class="section">
-                    <h2 class="section-title">Social Media & Platform Preferences (if applicable)</h2>
+                <div class="section" id="social-media-section" style="display:none;">
+                    <h2 class="section-title">Social Media & Platform Preferences</h2>
                     
                     <div class="form-group">
                         <label>Which platforms would you like us to manage? (Check all that apply)</label>
@@ -1496,10 +1496,110 @@
             return isValid;
         }
         
+        // Conditional form logic
+        function handleServiceSelection() {
+            const serviceCheckboxes = document.querySelectorAll('input[name="services_needed"]');
+            
+            serviceCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateConditionalSections();
+                });
+            });
+        }
+        
+        function updateConditionalSections() {
+            const selectedServices = Array.from(document.querySelectorAll('input[name="services_needed"]:checked')).map(cb => cb.value);
+            
+            // Photography Services
+            const photographySection = document.getElementById('photography-section');
+            if (selectedServices.includes('photography')) {
+                photographySection.style.display = 'block';
+            } else {
+                photographySection.style.display = 'none';
+                // Clear photography fields if hidden
+                clearSectionFields(photographySection);
+            }
+            
+            // Brand Services
+            const brandServicesSection = document.getElementById('brand-services-section');
+            if (selectedServices.includes('brand_services')) {
+                brandServicesSection.style.display = 'block';
+            } else {
+                brandServicesSection.style.display = 'none';
+                clearSectionFields(brandServicesSection);
+            }
+            
+            // Marketing Services
+            const marketingSection = document.getElementById('marketing-services-section');
+            if (selectedServices.includes('marketing')) {
+                marketingSection.style.display = 'block';
+                
+                // Show social media section if marketing is selected
+                const socialMediaSection = document.getElementById('social-media-section');
+                socialMediaSection.style.display = 'block';
+            } else {
+                marketingSection.style.display = 'none';
+                document.getElementById('social-media-section').style.display = 'none';
+                clearSectionFields(marketingSection);
+                clearSectionFields(document.getElementById('social-media-section'));
+            }
+        }
+        
+        function clearSectionFields(section) {
+            // Clear all form fields in the hidden section
+            const inputs = section.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    input.checked = false;
+                } else {
+                    input.value = '';
+                }
+            });
+        }
+        
+        // Handle social media conditional questions
+        function handleSocialMediaQuestions() {
+            const socialManagementSelect = document.getElementById('social_management');
+            const socialHandlesField = document.getElementById('social_handles').closest('.form-group');
+            const followerCountsField = document.getElementById('follower_counts').closest('.form-group');
+            
+            socialManagementSelect.addEventListener('change', function() {
+                if (this.value === 'nobody') {
+                    // Hide current social media fields if nobody manages it
+                    socialHandlesField.style.display = 'none';
+                    followerCountsField.style.display = 'none';
+                } else {
+                    socialHandlesField.style.display = 'block';
+                    followerCountsField.style.display = 'block';
+                }
+            });
+        }
+        
+        // Handle logo status conditional questions
+        function handleLogoStatusQuestions() {
+            const logoStatusSelect = document.getElementById('logo_status');
+            const brandColorsField = document.getElementById('brand_colors').closest('.form-group');
+            const brandFontsField = document.getElementById('brand_fonts').closest('.form-group');
+            
+            logoStatusSelect.addEventListener('change', function() {
+                if (this.value === 'need_logo') {
+                    // Hide brand asset questions if they need a logo designed
+                    brandColorsField.style.opacity = '0.5';
+                    brandFontsField.style.opacity = '0.5';
+                } else {
+                    brandColorsField.style.opacity = '1';
+                    brandFontsField.style.opacity = '1';
+                }
+            });
+        }
+
         // Initialize form
         document.addEventListener('DOMContentLoaded', function() {
             updateNavigationButtons();
             updateProgressBar();
+            handleServiceSelection();
+            handleSocialMediaQuestions();
+            handleLogoStatusQuestions();
         });
     </script>
 </body>
