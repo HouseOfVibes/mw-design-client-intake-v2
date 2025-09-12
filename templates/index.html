@@ -499,6 +499,8 @@
                 </div>
                 
                 <form method="post" action="{{ url_for('submit_form') }}" id="intakeForm">
+                    <!-- CSRF Protection -->
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 
                 <!-- PAGE 1: Business Information -->
                 <div class="form-page active" id="page1">
@@ -882,7 +884,7 @@
                                 <input type="checkbox" id="marketing_print_ads" name="marketing_services" value="print_advertising">
                                 <label for="marketing_print_ads">Print Advertising Design</label>
                             </div>
-                            <div class="checkbox_item">
+                            <div class="checkbox-item">
                                 <input type="checkbox" id="marketing_infographics" name="marketing_services" value="infographics">
                                 <label for="marketing_infographics">Infographic Design</label>
                             </div>

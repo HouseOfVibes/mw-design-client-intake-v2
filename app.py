@@ -1,7 +1,10 @@
 import os
 import io
 import csv
+import json
 import smtplib
+import re
+import secrets
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -11,8 +14,12 @@ import logging
 
 from flask import Flask, render_template, request, make_response, redirect, url_for, flash, jsonify, send_file
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_wtf.csrf import CSRFProtect
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from weasyprint import HTML
 from werkzeug.utils import secure_filename
+from markupsafe import escape
 
 # Import your existing models
 from models import db, Submission, User
@@ -46,14 +53,38 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Configuration
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'change-this-in-production')
+# Generate secure secret key if not provided
+if not os.environ.get('SECRET_KEY'):
+    secret_key = secrets.token_urlsafe(32)
+    print(f"Generated SECRET_KEY: {secret_key}")
+    os.environ['SECRET_KEY'] = secret_key
 
-# Handle database URL from Render - FORCE PostgreSQL
+# Secure Configuration
+app.config.update(
+    SECRET_KEY=os.environ.get('SECRET_KEY'),
+    SESSION_COOKIE_SECURE=os.environ.get('FLASK_ENV') == 'production',
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+    PERMANENT_SESSION_LIFETIME=timedelta(hours=2),
+    MAX_CONTENT_LENGTH=16 * 1024 * 1024,  # 16MB max file upload
+    WTF_CSRF_TIME_LIMIT=3600,  # CSRF token expires in 1 hour
+)
+
+# Initialize security extensions
+csrf = CSRFProtect(app)
+limiter = Limiter(
+    app=app,
+    key_func=get_remote_address,
+    default_limits=["1000 per day", "100 per hour"],
+    storage_uri=os.environ.get('REDIS_URL', 'memory://'),
+)
+
+# Handle database URL - Allow SQLite for development
 database_url = os.environ.get('DATABASE_URL')
 if not database_url:
-    # Fail fast if no database URL - don't fall back to SQLite
-    raise RuntimeError("DATABASE_URL environment variable is required")
+    # Use SQLite for development/testing
+    database_url = 'sqlite:///local_database.db'
+    print("⚠️  Using SQLite for development. Set DATABASE_URL for production.")
 
 # Fix for SQLAlchemy - Render uses postgres:// but SQLAlchemy needs postgresql://
 if database_url.startswith('postgres://'):
@@ -62,7 +93,8 @@ elif database_url.startswith('postgresql://'):
     database_url = database_url.replace('postgresql://', 'postgresql+psycopg://', 1)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
-print(f"🔗 Database URL: {database_url[:50]}...")  # Debug print
+if not os.environ.get('FLASK_ENV') == 'production':
+    print(f"🔗 Database URL: {database_url[:50]}...")  # Only show in dev
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize database
@@ -91,106 +123,111 @@ if NOTION_AVAILABLE:
     else:
         print("WARNING: Notion credentials not found. Integration disabled.")
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
+# Set up secure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s %(levelname)s: %(message)s'
+)
 logger = logging.getLogger(__name__)
+
+# Security logging
+security_logger = logging.getLogger('security')
+security_handler = logging.FileHandler('security.log')
+security_logger.addHandler(security_handler)
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# Enhanced Submission model methods (add these to your models.py)
-def enhance_submission_model():
-    """Add Notion integration methods to Submission model"""
+# Security Headers Middleware
+@app.after_request
+def set_security_headers(response):
+    """Add security headers to all responses"""
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['Permissions-Policy'] = 'geolocation=(), microphone=(), camera=()'
     
-    # Add new fields for Notion tracking
-    Submission.notion_page_id = db.Column(db.String(255))
-    Submission.synced_to_notion = db.Column(db.Boolean, default=False)
-    Submission.notion_sync_error = db.Column(db.Text)
-    Submission.last_notion_sync = db.Column(db.DateTime)
+    # Only add HSTS in production
+    if os.environ.get('FLASK_ENV') == 'production':
+        response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
     
-    # Add admin workflow fields
-    Submission.status = db.Column(db.String(50), default='New')
-    Submission.priority = db.Column(db.String(20), default='Medium')
-    Submission.assigned_to = db.Column(db.Integer, db.ForeignKey('users.id'))
-    Submission.internal_notes = db.Column(db.Text)
-    Submission.updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    # Content Security Policy
+    csp = (
+        "default-src 'self'; "
+        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; "
+        "style-src 'self' 'unsafe-inline'; "
+        "img-src 'self' data: https:; "
+        "font-src 'self'; "
+        "connect-src 'self';"
+    )
+    response.headers['Content-Security-Policy'] = csp
     
-    def to_notion_properties(self):
-        """Convert submission to Notion page properties format"""
-        properties = {
-            "Business Name": {
-                "title": [{"text": {"content": self.business_name or ""}}]
-            },
-            "Contact Person": {
-                "rich_text": [{"text": {"content": self.contact_name or ""}}]
-            },
-            "Email": {
-                "email": self.email or ""
-            },
-            "Phone": {
-                "phone_number": self.phone or ""
-            },
-            "Website": {
-                "url": self.website or ""
-            },
-            "Company Size": {
-                "select": {"name": self.company_size or "Not specified"}
-            },
-            "Budget": {
-                "select": {"name": self.budget or "Not specified"}
-            },
-            "Status": {
-                "select": {"name": getattr(self, 'status', 'New')}
-            },
-            "Priority": {
-                "select": {"name": getattr(self, 'priority', 'Medium')}
-            },
-            "Created": {
-                "date": {"start": self.created_at.isoformat() if self.created_at else None}
-            },
-            "Products/Services": {
-                "rich_text": [{"text": {"content": (self.products_services or "")[:2000]}}]
-            },
-            "Brand Story": {
-                "rich_text": [{"text": {"content": (self.brand_story or "")[:2000]}}]
-            },
-            "Target Demographics": {
-                "rich_text": [{"text": {"content": (self.demographics or "")[:2000]}}]
-            },
-            "Brand Voice": {
-                "select": {"name": self.brand_voice or "Not specified"}
-            },
-            "Content Tone": {
-                "select": {"name": self.content_tone or "Not specified"}
-            },
-            "Timeline": {
-                "select": {"name": self.timeline or "Not specified"}
-            },
-            "Posting Frequency": {
-                "select": {"name": self.posting_frequency or "Not specified"}
-            }
-        }
-        
-        # Handle array fields
-        if self.goals:
-            goals_text = "\n".join([f"• {goal}" for goal in self.goals[:10]])  # Limit for Notion
-            properties["Goals"] = {
-                "rich_text": [{"text": {"content": goals_text[:2000]}}]
-            }
-        
-        if self.platforms:
-            # Notion multi-select has limits
-            platform_names = [p for p in self.platforms[:10] if len(p) <= 100]
-            if platform_names:
-                properties["Platforms"] = {
-                    "multi_select": [{"name": platform} for platform in platform_names]
-                }
-        
-        return properties
+    return response
+
+# Input Validation Functions
+def validate_email(email):
+    """Validate email format"""
+    if not email or len(email) > 320:  # RFC compliant max length
+        return False, "Invalid email length"
     
-    # Add the method to the Submission class
-    Submission.to_notion_properties = to_notion_properties
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    if not re.match(pattern, email):
+        return False, "Invalid email format"
+    
+    return True, "Valid"
+
+def validate_phone(phone):
+    """Validate phone number"""
+    if not phone:
+        return True, "Valid"  # Optional field
+    
+    # Remove common formatting characters
+    clean_phone = re.sub(r'[^\d+]', '', phone)
+    
+    if len(clean_phone) < 10 or len(clean_phone) > 15:
+        return False, "Phone number must be 10-15 digits"
+    
+    return True, "Valid"
+
+def validate_text_field(text, field_name, max_length=2000, required=False):
+    """Validate text fields"""
+    if required and (not text or not text.strip()):
+        return False, f"{field_name} is required"
+    
+    if text and len(text) > max_length:
+        return False, f"{field_name} must be less than {max_length} characters"
+    
+    # Check for potential XSS patterns
+    dangerous_patterns = ['<script', 'javascript:', 'onload=', 'onerror=']
+    text_lower = text.lower() if text else ''
+    
+    for pattern in dangerous_patterns:
+        if pattern in text_lower:
+            return False, f"Invalid characters in {field_name}"
+    
+    return True, "Valid"
+
+def sanitize_input(text):
+    """Sanitize user input"""
+    if not text:
+        return ''
+    
+    # Escape HTML and remove potential XSS
+    sanitized = escape(str(text).strip())
+    
+    # Additional sanitization - remove null bytes
+    sanitized = sanitized.replace('\\x00', '')
+    
+    return str(sanitized)
+
+def log_security_event(event_type, user_id=None, ip_address=None, details=""):
+    """Log security events"""
+    ip = ip_address or request.remote_addr
+    security_logger.warning(f"{datetime.now()} - {event_type} - User: {user_id} - IP: {ip} - {details}")
+
+# Notion integration methods are now in models.py
 
 # Notion Integration Functions
 def create_notion_page(submission):
@@ -257,10 +294,9 @@ def update_notion_page(submission):
         
         return None
 
-# Create tables and enhance model
+# Create tables
 with app.app_context():
     db.create_all()
-    enhance_submission_model()
 
 # Your existing routes
 @app.route('/')
@@ -309,61 +345,109 @@ def sitemap_xml():
     return Response(xml_content, mimetype='application/xml')
 
 @app.route('/submit_form', methods=['POST'])
+@limiter.limit("5 per minute")
 def submit_form():
     try:
+        # Validate required fields
+        business_name = sanitize_input(request.form.get('business_name', ''))
+        contact_name = sanitize_input(request.form.get('contact_name', ''))
+        email = sanitize_input(request.form.get('email', ''))
+        
+        # Validate business name (required)
+        is_valid, msg = validate_text_field(business_name, 'Business name', 255, required=True)
+        if not is_valid:
+            flash(msg, 'danger')
+            log_security_event('Invalid Form Submission', details=f'Business name validation failed: {msg}')
+            return redirect(url_for('home'))
+        
+        # Validate contact name (required)
+        is_valid, msg = validate_text_field(contact_name, 'Contact name', 255, required=True)
+        if not is_valid:
+            flash(msg, 'danger')
+            log_security_event('Invalid Form Submission', details=f'Contact name validation failed: {msg}')
+            return redirect(url_for('home'))
+        
+        # Validate email (required)
+        is_valid, msg = validate_email(email)
+        if not is_valid:
+            flash(msg, 'danger')
+            log_security_event('Invalid Form Submission', details=f'Email validation failed: {msg}')
+            return redirect(url_for('home'))
+        
+        # Validate phone (optional)
+        phone = sanitize_input(request.form.get('phone', ''))
+        is_valid, msg = validate_phone(phone)
+        if not is_valid:
+            flash(msg, 'danger')
+            log_security_event('Invalid Form Submission', details=f'Phone validation failed: {msg}')
+            return redirect(url_for('home'))
+        
+        # Sanitize all other text fields
+        website = sanitize_input(request.form.get('website', ''))
+        products_services = sanitize_input(request.form.get('products_services', ''))
+        brand_story = sanitize_input(request.form.get('brand_story', ''))
+        usp = sanitize_input(request.form.get('usp', ''))
+        slogan = sanitize_input(request.form.get('slogan', ''))
+        
+        # Validate website URL if provided
+        if website and not (website.startswith('http://') or website.startswith('https://')):
+            if not website.startswith('www.'):
+                website = f'https://{website}'
+            else:
+                website = f'https://{website}'
         new_submission = Submission(
-            business_name=request.form.get('business_name'),
-            website=request.form.get('website'),
-            products_services=request.form.get('products_services'),
-            brand_story=request.form.get('brand_story'),
-            usp=request.form.get('usp'),
-            slogan=request.form.get('slogan'),
-            company_size=request.form.get('company_size'),
-            social_handles=request.form.get('social_handles'),
-            follower_counts=request.form.get('follower_counts'),
-            social_management=request.form.get('social_management'),
-            goals=request.form.getlist('goals'),
-            kpis=request.form.get('kpis'),
-            paid_ads=request.form.get('paid_ads'),
-            timeline=request.form.get('timeline'),
-            ideal_customer=request.form.get('ideal_customer'),
-            demographics=request.form.get('demographics'),
-            problems_solutions=request.form.get('problems_solutions'),
-            brand_voice=request.form.get('brand_voice'),
-            content_tone=request.form.get('content_tone'),
-            brand_words=request.form.get('brand_words'),
-            platforms=request.form.getlist('platforms'),
-            posting_approach=request.form.get('posting_approach'),
-            content_availability=request.form.get('content_availability'),
-            contact_name=request.form.get('contact_name'),
-            email=request.form.get('email'),
-            phone=request.form.get('phone'),
-            industry=request.form.get('industry'),
-            brand_colors=request.form.get('brand_colors'),
-            brand_fonts=request.form.get('brand_fonts'),
-            logo_status=request.form.get('logo_status'),
-            competitors=request.form.get('competitors'),
-            budget=request.form.get('budget'),
-            start_date=request.form.get('start_date'),
-            posting_frequency=request.form.get('posting_frequency'),
-            approval_level=request.form.get('approval_level'),
-            inspiration_accounts=request.form.get('inspiration_accounts'),
-            social_challenges=request.form.get('social_challenges'),
-            questions_about_services=request.form.get('questions_about_services'),
-            additional_info=request.form.get('additional_info'),
+            business_name=business_name,
+            website=website,
+            products_services=products_services,
+            brand_story=brand_story,
+            usp=usp,
+            slogan=slogan,
+            company_size=sanitize_input(request.form.get('company_size', '')),
+            social_handles=sanitize_input(request.form.get('social_handles', '')),
+            follower_counts=sanitize_input(request.form.get('follower_counts', '')),
+            social_management=sanitize_input(request.form.get('social_management', '')),
+            goals=json.dumps([sanitize_input(goal) for goal in request.form.getlist('goals')]),
+            kpis=sanitize_input(request.form.get('kpis', '')),
+            paid_ads=sanitize_input(request.form.get('paid_ads', '')),
+            timeline=sanitize_input(request.form.get('timeline', '')),
+            ideal_customer=sanitize_input(request.form.get('ideal_customer', '')),
+            demographics=sanitize_input(request.form.get('demographics', '')),
+            problems_solutions=sanitize_input(request.form.get('problems_solutions', '')),
+            brand_voice=sanitize_input(request.form.get('brand_voice', '')),
+            content_tone=sanitize_input(request.form.get('content_tone', '')),
+            brand_words=sanitize_input(request.form.get('brand_words', '')),
+            platforms=json.dumps([sanitize_input(platform) for platform in request.form.getlist('platforms')]),
+            posting_approach=sanitize_input(request.form.get('posting_approach', '')),
+            content_availability=sanitize_input(request.form.get('content_availability', '')),
+            contact_name=contact_name,
+            email=email,
+            phone=phone,
+            industry=sanitize_input(request.form.get('industry', '')),
+            brand_colors=sanitize_input(request.form.get('brand_colors', '')),
+            brand_fonts=sanitize_input(request.form.get('brand_fonts', '')),
+            logo_status=sanitize_input(request.form.get('logo_status', '')),
+            competitors=sanitize_input(request.form.get('competitors', '')),
+            budget=sanitize_input(request.form.get('budget', '')),
+            start_date=sanitize_input(request.form.get('start_date', '')),
+            posting_frequency=sanitize_input(request.form.get('posting_frequency', '')),
+            approval_level=sanitize_input(request.form.get('approval_level', '')),
+            inspiration_accounts=sanitize_input(request.form.get('inspiration_accounts', '')),
+            social_challenges=sanitize_input(request.form.get('social_challenges', '')),
+            questions_about_services=sanitize_input(request.form.get('questions_about_services', '')),
+            additional_info=sanitize_input(request.form.get('additional_info', '')),
             
-            # New service-specific fields
-            services_needed=','.join(request.form.getlist('services_needed')),
-            photography_type=','.join(request.form.getlist('photography_type')),
-            photography_location=request.form.get('photography_location'),
-            photography_timeline=request.form.get('photography_timeline'),
-            brand_services=','.join(request.form.getlist('brand_services')),
-            brand_stage=request.form.get('brand_stage'),
-            brand_priority=request.form.get('brand_priority'),
-            marketing_services=','.join(request.form.getlist('marketing_services')),
-            project_urgency=request.form.get('project_urgency'),
-            current_challenges=request.form.get('current_challenges'),
-            success_measurement=request.form.get('success_measurement'),
+            # New service-specific fields (sanitized)
+            services_needed=','.join([sanitize_input(service) for service in request.form.getlist('services_needed')]),
+            photography_type=','.join([sanitize_input(ptype) for ptype in request.form.getlist('photography_type')]),
+            photography_location=sanitize_input(request.form.get('photography_location', '')),
+            photography_timeline=sanitize_input(request.form.get('photography_timeline', '')),
+            brand_services=','.join([sanitize_input(service) for service in request.form.getlist('brand_services')]),
+            brand_stage=sanitize_input(request.form.get('brand_stage', '')),
+            brand_priority=sanitize_input(request.form.get('brand_priority', '')),
+            marketing_services=','.join([sanitize_input(service) for service in request.form.getlist('marketing_services')]),
+            project_urgency=sanitize_input(request.form.get('project_urgency', '')),
+            current_challenges=sanitize_input(request.form.get('current_challenges', '')),
+            success_measurement=sanitize_input(request.form.get('success_measurement', '')),
         )
         
         db.session.add(new_submission)
@@ -405,22 +489,41 @@ def submit_form():
     # Redirect to success page instead of generating PDF
     return redirect(url_for('submission_success'))
 
-@app.route('/success')
+@app.route('/success', methods=['GET', 'POST'])
 def submission_success():
     """Display success page after form submission"""
     return render_template('submission_success.html')
 
 @app.route('/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
+    
     if request.method == 'POST':
-        user = User.query.filter_by(username=request.form.get('username')).first()
-        if user and user.check_password(request.form.get('password')):
-            login_user(user)
+        username = sanitize_input(request.form.get('username', ''))
+        password = request.form.get('password', '')
+        
+        # Validate input
+        if not username or not password:
+            flash('Username and password are required', 'danger')
+            log_security_event('Invalid Login Attempt', details='Missing credentials')
+            return render_template('admin_login.html')
+        
+        if len(username) > 255 or len(password) > 255:
+            flash('Invalid credentials', 'danger')
+            log_security_event('Invalid Login Attempt', details='Credential length exceeded')
+            return render_template('admin_login.html')
+        
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            login_user(user, remember=False, duration=timedelta(hours=2))
+            log_security_event('Successful Login', user_id=user.id, details=f'User {username} logged in')
             return redirect(url_for('dashboard'))
         else:
             flash('Invalid username or password', 'danger')
+            log_security_event('Failed Login Attempt', details=f'Failed login for username: {username}')
+            
     return render_template('admin_login.html')
 
 @app.route('/logout')
@@ -630,32 +733,126 @@ def sync_single_notion(submission_id):
     return redirect(url_for('view_submission', submission_id=submission_id))
 
 @app.route('/register', methods=['GET', 'POST'])
+@login_required  # Only existing admins can create new accounts
+@limiter.limit("3 per hour")  # Strict rate limiting for account creation
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        username = sanitize_input(request.form.get('username', '')).strip()
+        password = request.form.get('password', '')
+        confirm_password = request.form.get('confirm_password', '')
+        
+        # Validate inputs
+        if not username or not password:
+            flash('Username and password are required.', 'danger')
+            log_security_event('Invalid Registration Attempt', user_id=current_user.id, details='Missing credentials')
+            return render_template('register.html')
+        
+        # Username validation
+        if len(username) < 3 or len(username) > 50:
+            flash('Username must be between 3-50 characters.', 'danger')
+            return render_template('register.html')
+        
+        if not re.match(r'^[a-zA-Z0-9_]+$', username):
+            flash('Username can only contain letters, numbers, and underscores.', 'danger')
+            return render_template('register.html')
+        
+        # Password validation
+        is_valid, msg = validate_password(password)
+        if not is_valid:
+            flash(msg, 'danger')
+            return render_template('register.html')
+        
+        # Confirm password match
+        if password != confirm_password:
+            flash('Passwords do not match.', 'danger')
+            return render_template('register.html')
+        
+        # Check if username exists
         existing_user = User.query.filter_by(username=username).first()
         if existing_user:
             flash('Username already exists.', 'danger')
-            return redirect(url_for('register'))
-        new_user = User(username=username)
-        new_user.set_password(password)
-        db.session.add(new_user)
-        db.session.commit()
-        flash('Registration successful! Please log in.', 'success')
-        return redirect(url_for('login'))
+            log_security_event('Registration Attempt - Duplicate Username', user_id=current_user.id, details=f'Attempted username: {username}')
+            return render_template('register.html')
+        
+        # Create user
+        try:
+            new_user = User(username=username)
+            new_user.set_password(password)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Registration successful! New admin account created.', 'success')
+            log_security_event('New User Created', user_id=current_user.id, details=f'Created user: {username}')
+            return redirect(url_for('dashboard'))
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f"Registration error: {e}")
+            flash('Registration failed. Please try again.', 'danger')
+            
     return render_template('register.html')
 
-# Error handlers for SEO and UX
+def validate_password(password):
+    """Validate password strength"""
+    if len(password) < 12:
+        return False, "Password must be at least 12 characters long"
+    if not re.search(r'[A-Z]', password):
+        return False, "Password must contain at least one uppercase letter"
+    if not re.search(r'[a-z]', password):
+        return False, "Password must contain at least one lowercase letter"
+    if not re.search(r'\\d', password):
+        return False, "Password must contain at least one number"
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        return False, "Password must contain at least one special character"
+    return True, "Valid password"
+
+# Enhanced Error handlers for security and UX
 @app.errorhandler(404)
 def page_not_found(error):
     """Custom 404 error page with proper SEO"""
+    log_security_event('Page Not Found', details=f'404 for URL: {request.url}')
     return render_template('404.html'), 404
 
 @app.errorhandler(500)
 def internal_server_error(error):
     """Custom 500 error handler"""
+    db.session.rollback()
+    logger.error(f"Internal server error: {error}")
+    log_security_event('Internal Server Error', details=f'500 error for URL: {request.url}')
     return render_template('404.html'), 500
 
+@app.errorhandler(403)
+def forbidden_error(error):
+    """Custom 403 error handler"""
+    log_security_event('Access Forbidden', details=f'403 error for URL: {request.url}')
+    return render_template('404.html'), 403
+
+@app.errorhandler(429)
+def rate_limit_handler(error):
+    """Rate limit exceeded error"""
+    log_security_event('Rate Limit Exceeded', details=f'Rate limit hit for URL: {request.url}')
+    return jsonify(error='Rate limit exceeded. Please try again later.'), 429
+
+@app.errorhandler(413)
+def request_entity_too_large(error):
+    """File upload too large"""
+    log_security_event('Upload Too Large', details=f'Large upload attempt for URL: {request.url}')
+    return jsonify(error='File too large. Maximum size is 16MB.'), 413
+
+# Create database tables
+with app.app_context():
+    try:
+        db.create_all()
+        logger.info("Database tables created successfully")
+    except Exception as e:
+        logger.error(f"Error creating database tables: {e}")
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    # Secure production configuration
+    debug_mode = os.environ.get('FLASK_ENV') != 'production'
+    port = int(os.environ.get('PORT', 5000))
+    
+    if debug_mode:
+        print("⚠️  Running in DEBUG mode. Set FLASK_ENV=production for production use.")
+        app.run(debug=True, host='0.0.0.0', port=port)
+    else:
+        print("✅ Running in PRODUCTION mode")
+        app.run(debug=False, host='0.0.0.0', port=port)
