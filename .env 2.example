@@ -1,0 +1,27 @@
+# MW Design Studio - Environment Variables Template
+# Copy this file to .env and fill in your actual values
+# NEVER commit the .env file to git!
+
+# Flask Configuration
+SECRET_KEY=your-super-secret-key-here
+FLASK_ENV=development
+DEBUG=True
+
+# Database (for local development - use SQLite or local PostgreSQL)
+DATABASE_URL=sqlite:///local_database.db
+
+# Notion Integration (optional)
+NOTION_TOKEN=secret_your_notion_integration_token_here
+NOTION_DB_ID=your-notion-database-id-here
+
+# Google Chat Webhooks (optional)
+GOOGLE_CHAT_WEBHOOK_URL=https://chat.googleapis.com/v1/spaces/YOUR_SPACE/messages?key=YOUR_KEY&token=YOUR_TOKEN
+
+# Email Configuration (if using email notifications)
+SMTP_SERVER=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your-email@gmail.com
+SMTP_PASSWORD=your-app-password
+
+# Other Optional Integrations
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...

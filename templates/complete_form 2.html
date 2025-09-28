@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MW Design Studio - Social Media Client Intake Form</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'mw-navy': '#1E3A8A',
+                        'mw-teal': '#20B2AA',
+                        'mw-light-teal': '#4FD1C7',
+                    },
+                    backgroundImage: {
+                        'mw-gradient': 'linear-gradient(135deg, #1E3A8A 0%, #20B2AA 50%, #4FD1C7 100%)',
+                    },
+                    fontFamily: {
+                        'montserrat': ['Montserrat', 'sans-serif'],
+                    },
+                    dropShadow: {
+                        'mw-logo': [
+                            '0 6px 12px rgba(0, 0, 0, 0.4)',
+                            '0 0 8px rgba(255, 255, 255, 0.8)'
+                        ]
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Alpine.js for interactivity -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <!-- Custom styles -->
+    <style>
+        .form-section {
+            background: rgba(32, 178, 170, 0.05);
+            border-left: 4px solid #20B2AA;
+        }
+        
+        .mw-input:focus {
+            border-color: #20B2AA;
+            box-shadow: 0 0 0 3px rgba(32, 178, 170, 0.1);
+        }
+        
+        .mw-checkbox:checked {
+            background-color: #20B2AA;
+            border-color: #20B2AA;
+        }
+        
+        .step-indicator {
+            transition: all 0.3s ease;
+        }
+        
+        .step-indicator.active {
+            background: linear-gradient(135deg, #1E3A8A 0%, #20B2AA 50%, #4FD1C7 100%);
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- MW Design Studio Header -->
+    <div class="bg-mw-gradient text-white py-16 mb-8">
+        <div class="container mx-auto px-4 text-center">
+            <!-- Logo -->
+            <img src="{{ url_for('static', filename='images/mw_logo.png') }}" 
+                 alt="MW Design Studio" 
+                 class="mx-auto h-48 w-auto mb-8 drop-shadow-mw-logo">
+            
+            <!-- Main Heading -->
+            <h1 class="text-5xl md:text-6xl font-bold font-montserrat mb-6">
+                Social Media Client Intake Form
+            </h1>
+            
+            <!-- Subtitle -->
+            <p class="text-xl md:text-2xl mb-4 opacity-90">
+                Help us understand your brand so we can create the perfect social media strategy for you
+            </p>
+            
+            <!-- Tagline -->
+            <p class="text-lg opacity-75">
+                Professional Social Media Management & Strategy
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Form Container -->
+    <div class="container mx-auto px-4 pb-16" x-data="intakeForm()">
+        <div class="max-w-4xl mx-auto">
+            <!-- Progress Indicator -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-sm text-gray-600 font-semibold">Form Progress</span>
+                    <span class="text-sm text-gray-600" x-text="`Step ${currentStep} of ${totalSteps}`"></span>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-3 mb-6">
+                    <div class="bg-mw-gradient h-3 rounded-full transition-all duration-500" 
+                         :style="`width: ${(currentStep / totalSteps) * 100}%`"></div>
+                </div>
+                
+                <!-- Step Indicators -->
+                <div class="flex justify-between text-xs">
+                    <template x-for="step in totalSteps" :key="step">
+                        <div class="flex flex-col items-center">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center step-indicator"
+                                 :class="step <= currentStep ? 'active' : 'bg-gray-300 text-gray-600'"
+                                 x-text="step"></div>
+                            <span class="mt-2 text-gray-500" x-text="getStepName(step)"></span>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form method="POST" action="/submit" class="space-y-8" @submit="validateCurrentStep">
+                
+                <!-- Section 1: Business Information -->
+                <div class="form-section p-8 rounded-xl" x-show="currentStep === 1" x-transition>
+                    <h2 class="text-3xl font-bold text-mw-navy mb-6 border-b-2 border-mw-teal pb-2">
+                        📋 Business Information
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Business Name -->
+                        <div class="md:col-span-2">
+                            <label for="business_name" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Business Name *
+                            </label>
+                            <input type="text" 
+                                   id="business_name" 
+                                   name="business_name" 
+                                   required
+                                   x-model="formData.business_name"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all"
+                                   placeholder="Enter your business name">
+                        </div>
+                        
+                        <!-- Website -->
+                        <div>
+                            <label for="website" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Website URL
+                            </label>
+                            <input type="url" 
+                                   id="website" 
+                                   name="website"
+                                   x-model="formData.website"
+                                   placeholder="https://example.com"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all">
+                        </div>
+                        
+                        <!-- Company Size -->
+                        <div>
+                            <label for="company_size" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Company Size
+                            </label>
+                            <select id="company_size" 
+                                    name="company_size"
+                                    x-model="formData.company_size"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all">
+                                <option value="">Select company size</option>
+                                <option value="1-10">1-10 employees</option>
+                                <option value="11-50">11-50 employees</option>
+                                <option value="51-200">51-200 employees</option>
+                                <option value="200+">200+ employees</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Contact Name -->
+                        <div>
+                            <label for="contact_name" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Contact Name *
+                            </label>
+                            <input type="text" 
+                                   id="contact_name" 
+                                   name="contact_name" 
+                                   required
+                                   x-model="formData.contact_name"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all"
+                                   placeholder="Your full name">
+                        </div>
+                        
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Email Address *
+                            </label>
+                            <input type="email" 
+                                   id="email" 
+                                   name="email" 
+                                   required
+                                   x-model="formData.email"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all"
+                                   placeholder="your@email.com">
+                        </div>
+                        
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Phone Number
+                            </label>
+                            <input type="tel" 
+                                   id="phone" 
+                                   name="phone"
+                                   x-model="formData.phone"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all"
+                                   placeholder="(555) 123-4567">
+                        </div>
+                        
+                        <!-- Budget -->
+                        <div>
+                            <label for="budget" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Monthly Budget Range
+                            </label>
+                            <select id="budget" 
+                                    name="budget"
+                                    x-model="formData.budget"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all">
+                                <option value="">Select budget range</option>
+                                <option value="$1,000-5,000">$1,000 - $5,000</option>
+                                <option value="$5,000-10,000">$5,000 - $10,000</option>
+                                <option value="$10,000-25,000">$10,000 - $25,000</option>
+                                <option value="$25,000+">$25,000+</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Business Details -->
+                <div class="form-section p-8 rounded-xl" x-show="currentStep === 2" x-transition>
+                    <h2 class="text-3xl font-bold text-mw-navy mb-6 border-b-2 border-mw-teal pb-2">
+                        🏢 Tell Us About Your Business
+                    </h2>
+                    
+                    <!-- Products & Services -->
+                    <div class="mb-6">
+                        <label for="products_services" class="block text-sm font-semibold text-gray-700 mb-2">
+                            What products or services do you offer?
+                        </label>
+                        <textarea id="products_services" 
+                                  name="products_services" 
+                                  rows="4"
+                                  x-model="formData.products_services"
+                                  placeholder="Describe your main products or services..."
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+                    
+                    <!-- Brand Story -->
+                    <div class="mb-6">
+                        <label for="brand_story" class="block text-sm font-semibold text-gray-700 mb-2">
+                            What's your brand story and mission?
+                        </label>
+                        <textarea id="brand_story" 
+                                  name="brand_story" 
+                                  rows="4"
+                                  x-model="formData.brand_story"
+                                  placeholder="Tell us about your company's mission, values, and what makes you unique..."
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+                    
+                    <!-- Unique Selling Proposition -->
+                    <div class="mb-6">
+                        <label for="usp" class="block text-sm font-semibold text-gray-700 mb-2">
+                            What makes you different from your competitors?
+                        </label>
+                        <textarea id="usp" 
+                                  name="usp" 
+                                  rows="3"
+                                  x-model="formData.usp"
+                                  placeholder="What's your unique selling proposition or competitive advantage?"
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Section 3: Social Media Goals -->
+                <div class="form-section p-8 rounded-xl" x-show="currentStep === 3" x-transition>
+                    <h2 class="text-3xl font-bold text-mw-navy mb-6 border-b-2 border-mw-teal pb-2">
+                        🎯 Social Media Goals & Strategy
+                    </h2>
+                    
+                    <!-- Goals -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            What are your primary social media goals? (Select all that apply)
+                        </label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <template x-for="goal in goalOptions" :key="goal.value">
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" 
+                                           :value="goal.value"
+                                           name="goals"
+                                           x-model="formData.goals"
+                                           class="mw-checkbox mr-3 h-4 w-4 text-mw-teal">
+                                    <span x-text="goal.label" class="text-sm"></span>
+                                </label>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Platforms -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-gray-700 mb-4">
+                            Which social media platforms do you want to focus on? (Select all that apply)
+                        </label>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <template x-for="platform in platformOptions" :key="platform.value">
+                                <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                                    <input type="checkbox" 
+                                           :value="platform.value"
+                                           name="platforms"
+                                           x-model="formData.platforms"
+                                           class="mw-checkbox mr-3 h-4 w-4 text-mw-teal">
+                                    <span x-text="platform.label" class="text-sm font-medium"></span>
+                                </label>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <!-- Timeline -->
+                    <div class="mb-6">
+                        <label for="timeline" class="block text-sm font-semibold text-gray-700 mb-2">
+                            When would you like to launch your social media campaign?
+                        </label>
+                        <select id="timeline" 
+                                name="timeline"
+                                x-model="formData.timeline"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all">
+                            <option value="">Select timeline</option>
+                            <option value="Immediately">Immediately</option>
+                            <option value="Within 1 month">Within 1 month</option>
+                            <option value="Within 3 months">Within 3 months</option>
+                            <option value="Within 6 months">Within 6 months</option>
+                            <option value="Not sure">Not sure yet</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Posting Frequency -->
+                    <div class="mb-6">
+                        <label for="posting_frequency" class="block text-sm font-semibold text-gray-700 mb-2">
+                            How often would you like to post on social media?
+                        </label>
+                        <select id="posting_frequency" 
+                                name="posting_frequency"
+                                x-model="formData.posting_frequency"
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all">
+                            <option value="">Select frequency</option>
+                            <option value="Daily">Daily (7 posts/week)</option>
+                            <option value="5 times per week">5 times per week</option>
+                            <option value="3-4 times per week">3-4 times per week</option>
+                            <option value="2-3 times per week">2-3 times per week</option>
+                            <option value="Weekly">Weekly (1 post/week)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Section 4: Target Audience -->
+                <div class="form-section p-8 rounded-xl" x-show="currentStep === 4" x-transition>
+                    <h2 class="text-3xl font-bold text-mw-navy mb-6 border-b-2 border-mw-teal pb-2">
+                        👥 Target Audience Profile
+                    </h2>
+                    
+                    <!-- Demographics -->
+                    <div class="mb-6">
+                        <label for="demographics" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Describe your ideal customer demographics
+                        </label>
+                        <textarea id="demographics" 
+                                  name="demographics" 
+                                  rows="4"
+                                  x-model="formData.demographics"
+                                  placeholder="Age range, gender, location, income level, interests, etc..."
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+                    
+                    <!-- Problems & Solutions -->
+                    <div class="mb-6">
+                        <label for="problems_solutions" class="block text-sm font-semibold text-gray-700 mb-2">
+                            What problems does your target audience face, and how do you solve them?
+                        </label>
+                        <textarea id="problems_solutions" 
+                                  name="problems_solutions" 
+                                  rows="4"
+                                  x-model="formData.problems_solutions"
+                                  placeholder="Describe the challenges your customers face and how your business addresses them..."
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+                </div>
+
+                <!-- Section 5: Brand & Content Strategy -->
+                <div class="form-section p-8 rounded-xl" x-show="currentStep === 5" x-transition>
+                    <h2 class="text-3xl font-bold text-mw-navy mb-6 border-b-2 border-mw-teal pb-2">
+                        🎨 Brand & Content Strategy
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Brand Voice -->
+                        <div>
+                            <label for="brand_voice" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Brand Voice & Personality
+                            </label>
+                            <select id="brand_voice" 
+                                    name="brand_voice"
+                                    x-model="formData.brand_voice"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all">
+                                <option value="">Select brand voice</option>
+                                <option value="Professional">Professional</option>
+                                <option value="Friendly">Friendly</option>
+                                <option value="Casual">Casual</option>
+                                <option value="Authoritative">Authoritative</option>
+                                <option value="Playful">Playful</option>
+                                <option value="Luxury">Luxury</option>
+                                <option value="Innovative">Innovative</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Content Tone -->
+                        <div>
+                            <label for="content_tone" class="block text-sm font-semibold text-gray-700 mb-2">
+                                Content Tone
+                            </label>
+                            <select id="content_tone" 
+                                    name="content_tone"
+                                    x-model="formData.content_tone"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all">
+                                <option value="">Select content tone</option>
+                                <option value="Educational">Educational</option>
+                                <option value="Inspirational">Inspirational</option>
+                                <option value="Entertaining">Entertaining</option>
+                                <option value="Promotional">Promotional</option>
+                                <option value="Behind-the-scenes">Behind-the-scenes</option>
+                                <option value="User-generated">User-generated</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Brand Colors -->
+                    <div class="mb-6 mt-6">
+                        <label for="brand_colors" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Brand Colors (if you have specific brand colors)
+                        </label>
+                        <input type="text" 
+                               id="brand_colors" 
+                               name="brand_colors"
+                               x-model="formData.brand_colors"
+                               placeholder="e.g., Navy Blue (#1E3A8A), Teal (#20B2AA)"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all">
+                    </div>
+                    
+                    <!-- Brand Fonts -->
+                    <div class="mb-6">
+                        <label for="brand_fonts" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Brand Fonts (if you have specific fonts)
+                        </label>
+                        <input type="text" 
+                               id="brand_fonts" 
+                               name="brand_fonts"
+                               x-model="formData.brand_fonts"
+                               placeholder="e.g., Montserrat, Arial, Helvetica"
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all">
+                    </div>
+                </div>
+
+                <!-- Section 6: Competition & Additional Information -->
+                <div class="form-section p-8 rounded-xl" x-show="currentStep === 6" x-transition>
+                    <h2 class="text-3xl font-bold text-mw-navy mb-6 border-b-2 border-mw-teal pb-2">
+                        🔍 Competition & Final Details
+                    </h2>
+                    
+                    <!-- Competitors -->
+                    <div class="mb-6">
+                        <label for="competitors" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Who are your main competitors? (Include social media accounts if known)
+                        </label>
+                        <textarea id="competitors" 
+                                  name="competitors" 
+                                  rows="3"
+                                  x-model="formData.competitors"
+                                  placeholder="List your main competitors and their social media presence..."
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+                    
+                    <!-- Inspiration -->
+                    <div class="mb-6">
+                        <label for="inspiration" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Are there any brands or social media accounts you admire? What do you like about them?
+                        </label>
+                        <textarea id="inspiration" 
+                                  name="inspiration" 
+                                  rows="3"
+                                  x-model="formData.inspiration"
+                                  placeholder="Share accounts or brands you find inspiring and why..."
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+                    
+                    <!-- Additional Information -->
+                    <div class="mb-6">
+                        <label for="additional_info" class="block text-sm font-semibold text-gray-700 mb-2">
+                            Any additional information you'd like to share?
+                        </label>
+                        <textarea id="additional_info" 
+                                  name="additional_info" 
+                                  rows="4"
+                                  x-model="formData.additional_info"
+                                  placeholder="Share any other details, special requirements, or questions you have..."
+                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg mw-input focus:outline-none transition-all resize-none"></textarea>
+                    </div>
+                    
+                    <!-- Final CTA -->
+                    <div class="bg-gradient-to-r from-mw-navy to-mw-teal p-6 rounded-xl text-white text-center">
+                        <h3 class="text-xl font-bold mb-2">🎉 Almost Done!</h3>
+                        <p class="mb-4 opacity-90">Click below to generate your personalized social media strategy report.</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between items-center pt-8 border-t border-gray-200">
+                    <button type="button" 
+                            x-show="currentStep > 1"
+                            @click="previousStep()"
+                            class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                        Previous
+                    </button>
+                    
+                    <div class="flex space-x-4">
+                        <button type="button" 
+                                x-show="currentStep < totalSteps"
+                                @click="nextStep()"
+                                class="px-8 py-3 bg-mw-gradient text-white rounded-lg hover:opacity-90 transition-all transform hover:-translate-y-1 shadow-lg flex items-center">
+                            Next Step
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                        </button>
+                        
+                        <button type="submit" 
+                                x-show="currentStep === totalSteps"
+                                class="px-8 py-3 bg-mw-gradient text-white rounded-lg hover:opacity-90 transition-all transform hover:-translate-y-1 shadow-lg flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            Generate PDF Report
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Alpine.js Form Logic -->
+    <script>
+        function intakeForm() {
+            return {
+                currentStep: 1,
+                totalSteps: 6,
+                
+                formData: {
+                    business_name: '',
+                    website: '',
+                    company_size: '',
+                    contact_name: '',
+                    email: '',
+                    phone: '',
+                    budget: '',
+                    products_services: '',
+                    brand_story: '',
+                    usp: '',
+                    goals: [],
+                    platforms: [],
+                    timeline: '',
+                    posting_frequency: '',
+                    demographics: '',
+                    problems_solutions: '',
+                    brand_voice: '',
+                    content_tone: '',
+                    brand_colors: '',
+                    brand_fonts: '',
+                    competitors: '',
+                    inspiration: '',
+                    additional_info: ''
+                },
+                
+                goalOptions: [
+                    { value: 'increase_brand_awareness', label: 'Increase Brand Awareness' },
+                    { value: 'generate_leads', label: 'Generate Leads' },
+                    { value: 'drive_website_traffic', label: 'Drive Website Traffic' },
+                    { value: 'boost_sales', label: 'Boost Sales' },
+                    { value: 'improve_customer_engagement', label: 'Improve Customer Engagement' },
+                    { value: 'build_community', label: 'Build Community' },
+                    { value: 'establish_thought_leadership', label: 'Establish Thought Leadership' },
+                    { value: 'customer_support', label: 'Customer Support' }
+                ],
+                
+                platformOptions: [
+                    { value: 'facebook', label: 'Facebook' },
+                    { value: 'instagram', label: 'Instagram' },
+                    { value: 'twitter', label: 'Twitter/X' },
+                    { value: 'linkedin', label: 'LinkedIn' },
+                    { value: 'tiktok', label: 'TikTok' },
+                    { value: 'youtube', label: 'YouTube' },
+                    { value: 'pinterest', label: 'Pinterest' },
+                    { value: 'snapchat', label: 'Snapchat' }
+                ],
+                
+                getStepName(step) {
+                    const names = ['Business', 'About', 'Goals', 'Audience', 'Brand', 'Final'];
+                    return names[step - 1];
+                },
+                
+                nextStep() {
+                    if (this.validateCurrentStep()) {
+                        this.currentStep++;
+                    }
+                },
+                
+                previousStep() {
+                    this.currentStep--;
+                },
+                
+                validateCurrentStep() {
+                    // Basic validation for required fields
+                    if (this.currentStep === 1) {
+                        if (!this.formData.business_name || !this.formData.contact_name || !this.formData.email) {
+                            alert('Please fill in all required fields (marked with *)');
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+                
+                init() {
+                    console.log('MW Design Studio Client Intake Form v2.0 initialized');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
