@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MW Design Studio - Professional Brand Design & Marketing Services | Client Intake Form</title>
-    
+
     <!-- SEO Meta Tags -->
     <meta name="description" content="Transform your business with MW Design Studio's expert brand design, professional photography, and strategic marketing services. Complete our client intake form to get started with custom solutions tailored to your goals.">
     <meta name="keywords" content="brand design, logo design, professional photography, marketing services, SEO services, social media management, brand identity, business cards, brochures, content creation, brand strategy, graphic design, small business marketing">
     <meta name="author" content="MW Design Studio">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://mw-design-client-intake.onrender.com/">
-    
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:site_name" content="MW Design Studio">
     <meta property="og:type" content="website">
@@ -22,18 +22,18 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="en_US">
-    
+
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MW Design Studio - Professional Brand Design & Marketing Services">
     <meta name="twitter:description" content="Transform your business with expert brand design, professional photography, and strategic marketing services.">
     <meta name="twitter:image" content="{{ url_for('static', filename='mw_logo.png', _external=True) }}">
-    
+
     <!-- Business Information Meta Tags -->
     <meta name="geo.region" content="US">
     <meta name="geo.placename" content="United States">
     <meta name="business:contact_data:email" content="info@mwdesign.agency">
-    
+
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#1E3A8A">
     <meta name="mobile-web-app-capable" content="yes">
@@ -42,18 +42,19 @@
     <meta name="apple-mobile-web-app-title" content="MW Intake">
     <meta name="msapplication-TileColor" content="#1E3A8A">
     <meta name="msapplication-TileImage" content="{{ url_for('static', filename='mw_logo.png') }}">
-    
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-    
+
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='mw_logo.png') }}">
     <link rel="apple-touch-icon" sizes="152x152" href="{{ url_for('static', filename='icons/icon-152x152.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='icons/icon-180x180.png') }}">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='mw_logo.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='mw_logo.png') }}">
+
     <style>
         :root {
             /* MW Design Studio Brand Colors */
@@ -77,7 +78,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -97,64 +98,26 @@
         }
 
         .mw-logo {
-            max-height: 200px;
+            max-height: 180px;
             width: auto;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
         }
 
         .mw-header h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 1rem;
             font-weight: 700;
         }
 
         .mw-header .lead {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
         }
 
         .mw-header .opacity-75 {
             opacity: 0.75;
-            font-size: 1rem;
-        }
-
-        .mw-footer {
-            background: var(--mw-gradient);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-            text-align: center;
-        }
-
-        .mw-footer h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-
-        .mw-footer p {
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .mw-footer .contact-info {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-top: 2rem;
-        }
-
-        .mw-footer .contact-info a {
-            color: white;
-            text-decoration: none;
-        }
-
-        .mw-footer .contact-info a:hover {
-            text-decoration: underline;
+            font-size: 0.95rem;
         }
 
         .form-container {
@@ -162,15 +125,15 @@
         }
 
         .section {
-            margin-bottom: 40px;
-            padding: 30px;
+            margin-bottom: 35px;
+            padding: 25px;
             background: #f8f9fa;
-            border-radius: 15px;
-            border-left: 5px solid var(--mw-secondary);
+            border-radius: 12px;
+            border-left: 4px solid var(--mw-secondary);
         }
 
         .section-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: #2c3e50;
             margin-bottom: 20px;
             font-weight: 600;
@@ -186,10 +149,6 @@
             gap: 20px;
         }
 
-        .form-row.three-col {
-            grid-template-columns: 1fr 1fr 1fr;
-        }
-
         label {
             display: block;
             margin-bottom: 8px;
@@ -201,7 +160,7 @@
             color: #e74c3c;
         }
 
-        input[type="text"], input[type="email"], input[type="url"], textarea, select {
+        input[type="text"], input[type="email"], input[type="tel"], input[type="url"], textarea, select {
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e1e8ed;
@@ -219,20 +178,20 @@
 
         textarea {
             resize: vertical;
-            min-height: 100px;
+            min-height: 80px;
         }
 
-        .checkbox-group, .radio-group {
+        .checkbox-group {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            grid-template-columns: 1fr;
+            gap: 12px;
             margin-top: 10px;
         }
 
-        .checkbox-item, .radio-item {
+        .checkbox-item {
             display: flex;
             align-items: center;
-            padding: 12px;
+            padding: 15px;
             background: white;
             border-radius: 8px;
             border: 2px solid #e1e8ed;
@@ -240,14 +199,32 @@
             cursor: pointer;
         }
 
-        .checkbox-item:hover, .radio-item:hover {
+        .checkbox-item:hover {
             border-color: var(--mw-secondary);
             background: rgba(32, 178, 170, 0.05);
         }
 
-        .checkbox-item input, .radio-item input {
-            margin-right: 10px;
+        .checkbox-item input {
+            margin-right: 12px;
             width: auto;
+            transform: scale(1.2);
+        }
+
+        .checkbox-item label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .service-category {
+            margin-bottom: 25px;
+        }
+
+        .service-category h4 {
+            color: var(--mw-primary);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 600;
         }
 
         .submit-container {
@@ -274,195 +251,24 @@
             box-shadow: 0 15px 35px rgba(30, 58, 138, 0.4);
         }
 
-        .admin-link {
-            margin-top: 20px;
-        }
-
-        .admin-link a {
-            color: var(--mw-secondary);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .admin-link a:hover {
-            text-decoration: underline;
-        }
-
-        /* Multi-page form styles */
-        .form-page {
-            display: none;
-        }
-        
-        .form-page.active {
-            display: block;
-            animation: fadeIn 0.3s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        .progress-container {
-            background: white;
-            padding: 30px;
-            margin-bottom: 20px;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .progress-bar {
-            display: flex;
-            justify-content: space-between;
-            position: relative;
-            margin-bottom: 30px;
-        }
-        
-        .progress-bar::before {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: #e1e8ed;
-            z-index: 1;
-        }
-        
-        .progress-line {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            height: 4px;
-            background: var(--mw-gradient);
-            z-index: 2;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-        
-        .progress-line.step-2 {
-            width: 100%;
-        }
-        
-        .progress-step {
-            position: relative;
-            z-index: 3;
-            text-align: center;
-            flex: 1;
-        }
-        
-        .progress-step-number {
-            width: 40px;
-            height: 40px;
-            background: #e1e8ed;
-            color: #999;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            margin-bottom: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .progress-step.active .progress-step-number,
-        .progress-step.completed .progress-step-number {
-            background: var(--mw-gradient);
-            color: white;
-        }
-        
-        .progress-step-label {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .progress-step.active .progress-step-label {
-            color: var(--mw-primary);
-            font-weight: 600;
-        }
-        
-        .form-navigation {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            padding: 30px;
-            background: #f8f9fa;
-            border-radius: 15px;
-            margin-top: 30px;
-        }
-        
-        .nav-btn {
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .nav-btn.prev {
-            background: white;
-            color: var(--mw-primary);
-            border: 2px solid var(--mw-primary);
-        }
-        
-        .nav-btn.prev:hover {
-            background: var(--mw-primary);
-            color: white;
-        }
-        
-        .nav-btn.next {
-            background: var(--mw-gradient);
-            color: white;
-            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
-        }
-        
-        .nav-btn.next:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(30, 58, 138, 0.4);
-        }
-        
-        .nav-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .nav-btn.hidden {
-            visibility: hidden;
-        }
 
         @media (max-width: 768px) {
             .form-row {
                 grid-template-columns: 1fr;
             }
-            
-            .form-row.three-col {
-                grid-template-columns: 1fr;
+
+            .mw-header h1 {
+                font-size: 1.8rem;
             }
-            
-            .checkbox-group, .radio-group {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
+
             .container {
                 margin: 10px;
             }
-            
+
             .form-container {
-                padding: 20px;
+                padding: 25px;
             }
-            
+
             .section {
                 padding: 20px;
             }
@@ -474,1134 +280,311 @@
     <div class="mw-header">
         <div class="container">
             <img src="{{ url_for('static', filename='mw_logo.png') }}" alt="MW Design Studio - Professional Brand Design, Photography & Marketing Services" class="mw-logo">
-            <h1>Professional Brand Design & Marketing Services Client Intake</h1>
-            <p class="lead">Transform your business with custom brand identity, professional photography, and strategic marketing solutions tailored to your goals</p>
-            <p class="opacity-75">Brand Design | Professional Photography | SEO & Marketing Services | Content Creation</p>
+            <h1>Client Intake Form</h1>
+            <p class="lead">Let's discuss your project and create something amazing together</p>
+            <p class="opacity-75">Brand Design | Professional Photography | Marketing Services | Business Support</p>
         </div>
     </div>
 
     <div class="container">
         <div class="form-wrapper">
             <div class="form-container">
-                <!-- Progress Indicator -->
-                <div class="progress-container">
-                    <div class="progress-bar">
-                        <div class="progress-line" id="progressLine"></div>
-                        <div class="progress-step active" id="step1">
-                            <div class="progress-step-number">1</div>
-                            <div class="progress-step-label">Business Information</div>
-                        </div>
-                        <div class="progress-step" id="step2">
-                            <div class="progress-step-number">2</div>
-                            <div class="progress-step-label">Project Details</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <form method="post" action="{{ url_for('submit_form') }}" id="intakeForm">
-                    <!-- CSRF Protection -->
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                
-                <!-- PAGE 1: Business Information -->
-                <div class="form-page active" id="page1">
-                
-                <!-- Business & Brand Information -->
-                <div class="section">
-                    <h2 class="section-title">Business & Brand Information</h2>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="business_name">Business Name <span class="required">*</span></label>
-                            <input type="text" id="business_name" name="business_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="website">Website URL</label>
-                            <input type="url" id="website" name="website">
-                        </div>
-                    </div>
+                <form method="post" action="{{ url_for('submit_form_new') }}" id="intakeForm">
 
-                    <div class="form-group">
-                        <label for="products_services">What products or services does your business offer? <span class="required">*</span></label>
-                        <textarea id="products_services" name="products_services" required></textarea>
-                    </div>
+                    <!-- Contact Information -->
+                    <div class="section">
+                        <h2 class="section-title">Contact Information</h2>
 
-                    <div class="form-group">
-                        <label for="brand_story">What is your mission/brand story? <span class="required">*</span></label>
-                        <textarea id="brand_story" name="brand_story" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="usp">What makes your business unique (USP)? <span class="required">*</span></label>
-                        <textarea id="usp" name="usp" required></textarea>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="slogan">Slogan/Tagline (if applicable)</label>
-                            <input type="text" id="slogan" name="slogan">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contact_name">Full Name <span class="required">*</span></label>
+                                <input type="text" id="contact_name" name="contact_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="business_name">Business Name <span class="required">*</span></label>
+                                <input type="text" id="business_name" name="business_name" required>
+                            </div>
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email Address <span class="required">*</span></label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number <span style="color: #e74c3c;">*</span></label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="company_size">Company Size</label>
-                            <select id="company_size" name="company_size">
+                            <label for="preferred_contact">Preferred Method of Contact <span style="color: #e74c3c;">*</span></label>
+                            <select id="preferred_contact" name="preferred_contact" required>
                                 <option value="">Select...</option>
-                                <option value="1-10">1-10 employees</option>
-                                <option value="11-50">11-50 employees</option>
-                                <option value="51-200">51-200 employees</option>
-                                <option value="200+">200+ employees</option>
+                                <option value="email">Email</option>
+                                <option value="phone">Phone</option>
+                                <option value="text">Text Message</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="form-row">
+                    <!-- Services of Interest -->
+                    <div class="section">
+                        <h2 class="section-title">Services of Interest <span style="color: #e74c3c;">*</span></h2>
+                        <p style="margin-bottom: 20px; color: #666;">Please select at least one service you're interested in:</p>
+
+                        <div class="service-category">
+                            <h4>Branding & Identity</h4>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="brand_essentials" name="services_needed" value="brand_essentials">
+                                    <label for="brand_essentials">Brand Essentials Package</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="starter_brand_kit" name="services_needed" value="starter_brand_kit">
+                                    <label for="starter_brand_kit">Starter Brand Kit Package</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="brand_launch" name="services_needed" value="brand_launch">
+                                    <label for="brand_launch">Brand Launch Package</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-category">
+                            <h4>Website Development & Hosting</h4>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="starter_website" name="services_needed" value="starter_website">
+                                    <label for="starter_website">Starter Website Package</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="business_launch_site" name="services_needed" value="business_launch_site">
+                                    <label for="business_launch_site">Business Launch Site Package</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="website_management" name="services_needed" value="website_management">
+                                    <label for="website_management">Website Management & Hosting</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-category">
+                            <h4>Social Media Management</h4>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="social_starter" name="services_needed" value="social_starter">
+                                    <label for="social_starter">Social Starter Package</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="ongoing_social" name="services_needed" value="ongoing_social">
+                                    <label for="ongoing_social">Ongoing Social Management</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-category">
+                            <h4>Copywriting Services</h4>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="website_copy_starter" name="services_needed" value="website_copy_starter">
+                                    <label for="website_copy_starter">Website Copy Starter</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="complete_website_copy" name="services_needed" value="complete_website_copy">
+                                    <label for="complete_website_copy">Complete Website Copy</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="ad_social_copy" name="services_needed" value="ad_social_copy">
+                                    <label for="ad_social_copy">Ad/Social Campaign Copy</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-category">
+                            <h4>Photography Services</h4>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="headshot_session" name="services_needed" value="headshot_session">
+                                    <label for="headshot_session">Professional Headshot Session</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="team_photos" name="services_needed" value="team_photos">
+                                    <label for="team_photos">Team Photo Package</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="brand_photography" name="services_needed" value="brand_photography">
+                                    <label for="brand_photography">Business Brand Photography</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-category">
+                            <h4>Automation & Workflow</h4>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="starter_automation" name="services_needed" value="starter_automation">
+                                    <label for="starter_automation">Starter Automation Setup</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="workflow_builder" name="services_needed" value="workflow_builder">
+                                    <label for="workflow_builder">Business Workflow Builder</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="automation_management" name="services_needed" value="automation_management">
+                                    <label for="automation_management">Automation Management Plan</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="service-category">
+                            <h4>Mobile Business Support</h4>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="mobile_notary" name="services_needed" value="mobile_notary">
+                                    <label for="mobile_notary">Standard Mobile Notary Service</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="business_documents" name="services_needed" value="business_documents">
+                                    <label for="business_documents">Business Document Session</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="after_hours_notary" name="services_needed" value="after_hours_notary">
+                                    <label for="after_hours_notary">After-Hours Premium Service</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="individual_fingerprinting" name="services_needed" value="individual_fingerprinting">
+                                    <label for="individual_fingerprinting">Individual Ink Fingerprinting</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="group_fingerprinting" name="services_needed" value="group_fingerprinting">
+                                    <label for="group_fingerprinting">Small Business/Group Ink Fingerprinting</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="business_formation" name="services_needed" value="business_formation">
+                                    <label for="business_formation">Business Formation Bundle</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Details -->
+                    <div class="section">
+                        <h2 class="section-title">Project Details</h2>
+
                         <div class="form-group">
-                            <label for="social_handles">Current Social Media Handles</label>
-                            <textarea id="social_handles" name="social_handles" placeholder="List your current social media accounts"></textarea>
+                            <label for="project_goals">Tell us about your project or goals <span class="required">*</span></label>
+                            <textarea id="project_goals" name="project_goals" required
+                                placeholder="Describe your project, what you're hoping to achieve, and any specific requirements or preferences you have."></textarea>
                         </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="start_date">Preferred Start Date</label>
+                                <input type="text" id="start_date" name="start_date"
+                                    placeholder="e.g., ASAP, January 2025, Next Quarter">
+                            </div>
+                            <div class="form-group">
+                                <label for="budget_range">Budget Range (Optional)</label>
+                                <select id="budget_range" name="budget_range">
+                                    <option value="">Select...</option>
+                                    <option value="under_1000">Under $1,000</option>
+                                    <option value="1000_2500">$1,000 - $2,500</option>
+                                    <option value="2500_5000">$2,500 - $5,000</option>
+                                    <option value="5000_10000">$5,000 - $10,000</option>
+                                    <option value="over_10000">Over $10,000</option>
+                                    <option value="discuss">Let's discuss</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="follower_counts">Current Follower Counts</label>
-                            <textarea id="follower_counts" name="follower_counts" placeholder="e.g., Instagram: 1.2K, Facebook: 500"></textarea>
+                            <label for="additional_info">Anything else we should know?</label>
+                            <textarea id="additional_info" name="additional_info"
+                                placeholder="Share any additional details, questions, or specific requirements that would help us serve you better."></textarea>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="social_management">Who currently manages your social media?</label>
-                        <select id="social_management" name="social_management">
-                            <option value="">Select...</option>
-                            <option value="owner">Business Owner</option>
-                            <option value="employee">Employee</option>
-                            <option value="agency">Marketing Agency</option>
-                            <option value="freelancer">Freelancer</option>
-                            <option value="nobody">Nobody Currently</option>
-                        </select>
+                    <!-- Submit Button -->
+                    <div class="submit-container">
+                        <button type="submit" class="submit-btn">Submit Intake Form</button>
                     </div>
-                </div>
-
-                <!-- Services Needed -->
-                <div class="section">
-                    <h2 class="section-title">Services Needed</h2>
-                    
-                    <div class="form-group">
-                        <label>Which services are you interested in? (Check all that apply)</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_brand" name="services_needed" value="brand_services">
-                                <label for="service_brand">Brand Services (Logo, Identity, Guidelines)</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_photography" name="services_needed" value="photography">
-                                <label for="service_photography">Professional Photography</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_marketing" name="services_needed" value="marketing">
-                                <label for="service_marketing">Marketing Services (Social Media, SEO, Content)</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_print" name="services_needed" value="print_design">
-                                <label for="service_print">Print Design (Business Cards, Brochures, Signage)</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_packaging" name="services_needed" value="packaging">
-                                <label for="service_packaging">Packaging Design</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="service_templates" name="services_needed" value="templates">
-                                <label for="service_templates">Templates (Presentation, Email, Stationery)</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>What are your primary business goals? (Check all that apply)</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="goal_brand" name="goals" value="brand_awareness">
-                                <label for="goal_brand">Brand Awareness</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="goal_leads" name="goals" value="lead_generation">
-                                <label for="goal_leads">Lead Generation</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="goal_sales" name="goals" value="sales">
-                                <label for="goal_sales">Sales</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="goal_establish" name="goals" value="establish_presence">
-                                <label for="goal_establish">Establish Professional Presence</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="goal_rebrand" name="goals" value="rebrand">
-                                <label for="goal_rebrand">Rebrand/Refresh Existing Brand</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="goal_digital" name="goals" value="digital_growth">
-                                <label for="goal_digital">Digital Growth & Online Presence</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="kpis">What results/KPIs do you want to track?</label>
-                            <textarea id="kpis" name="kpis" placeholder="e.g., followers, engagement, leads, sales"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="paid_ads">Are you interested in paid advertising?</label>
-                            <select id="paid_ads" name="paid_ads">
-                                <option value="">Select...</option>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                                <option value="unsure">Unsure</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="timeline">What is your campaign timeline?</label>
-                        <select id="timeline" name="timeline">
-                            <option value="">Select...</option>
-                            <option value="asap">ASAP</option>
-                            <option value="1-2weeks">1-2 weeks</option>
-                            <option value="1month">1 month</option>
-                            <option value="2-3months">2-3 months</option>
-                            <option value="3+months">3+ months</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Target Audience -->
-                <div class="section">
-                    <h2 class="section-title">Target Audience</h2>
-                    
-                    <div class="form-group">
-                        <label for="ideal_customer">Who is your ideal customer? <span class="required">*</span></label>
-                        <textarea id="ideal_customer" name="ideal_customer" required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="demographics">Target demographics and interests <span class="required">*</span></label>
-                        <textarea id="demographics" name="demographics" required placeholder="Age, location, interests, behaviors, etc."></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="problems_solutions">What problems does your brand solve for customers? <span class="required">*</span></label>
-                        <textarea id="problems_solutions" name="problems_solutions" required></textarea>
-                    </div>
-                </div>
-                
-                </div> <!-- End of Page 1 -->
-                
-                <!-- PAGE 2: Project Details -->
-                <div class="form-page" id="page2">
-
-                <!-- Brand Voice & Personality -->
-                <div class="section">
-                    <h2 class="section-title">Brand Voice & Personality</h2>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="brand_voice">How would you describe your brand voice?</label>
-                            <select id="brand_voice" name="brand_voice">
-                                <option value="">Select...</option>
-                                <option value="professional">Professional</option>
-                                <option value="casual">Casual & Friendly</option>
-                                <option value="authoritative">Authoritative</option>
-                                <option value="playful">Playful & Fun</option>
-                                <option value="inspirational">Inspirational</option>
-                                <option value="educational">Educational</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="content_tone">Desired tone for posts</label>
-                            <select id="content_tone" name="content_tone">
-                                <option value="">Select...</option>
-                                <option value="informative">Informative</option>
-                                <option value="conversational">Conversational</option>
-                                <option value="inspiring">Inspiring</option>
-                                <option value="educational">Educational</option>
-                                <option value="promotional">Promotional</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="brand_words">Words/phrases to use or avoid</label>
-                        <textarea id="brand_words" name="brand_words" placeholder="Words to use: innovative, trusted, premium... Words to avoid: cheap, basic..."></textarea>
-                    </div>
-                </div>
-
-                <!-- Photography Services -->
-                <div class="section" id="photography-section" style="display:none;">
-                    <h2 class="section-title">Photography Services</h2>
-                    
-                    <div class="form-group">
-                        <label>What type of photography do you need? (Check all that apply)</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="photo_headshots" name="photography_type" value="headshots">
-                                <label for="photo_headshots">Professional Headshots & Portraits</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="photo_product" name="photography_type" value="product">
-                                <label for="photo_product">Product Photography</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="photo_brand" name="photography_type" value="brand_lifestyle">
-                                <label for="photo_brand">Brand & Lifestyle Photography</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="photo_workspace" name="photography_type" value="workspace">
-                                <label for="photo_workspace">Office/Workspace Photography</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="photo_event" name="photography_type" value="event">
-                                <label for="photo_event">Event Photography</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="photo_direction" name="photography_type" value="direction">
-                                <label for="photo_direction">Photography Direction & Strategy Only</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="photography_location">Photography Location Preference</label>
-                            <select id="photography_location" name="photography_location">
-                                <option value="">Select...</option>
-                                <option value="local">Local/Regional (50-100 mile radius)</option>
-                                <option value="travel">Extended Travel (Nationwide)</option>
-                                <option value="studio">Studio Session</option>
-                                <option value="client_location">On-location at Business</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="photography_timeline">Photography Timeline</label>
-                            <select id="photography_timeline" name="photography_timeline">
-                                <option value="">Select...</option>
-                                <option value="rush">Rush (1-2 weeks)</option>
-                                <option value="standard">Standard (3-4 weeks)</option>
-                                <option value="flexible">Flexible (1-2 months)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Brand Services -->
-                <div class="section" id="brand-services-section" style="display:none;">
-                    <h2 class="section-title">Brand Services</h2>
-                    
-                    <div class="form-group">
-                        <label>Which brand services do you need? (Check all that apply)</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="brand_logo" name="brand_services" value="logo_design">
-                                <label for="brand_logo">Logo Design</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="brand_identity" name="brand_services" value="brand_identity">
-                                <label for="brand_identity">Brand Identity System</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="brand_guidelines" name="brand_services" value="brand_guidelines">
-                                <label for="brand_guidelines">Brand Guidelines</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="brand_business_cards" name="brand_services" value="business_cards">
-                                <label for="brand_business_cards">Business Cards</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="brand_brochures" name="brand_services" value="brochures">
-                                <label for="brand_brochures">Brochures & Marketing Materials</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="brand_signage" name="brand_services" value="signage">
-                                <label for="brand_signage">Signage & Vehicle Graphics</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="brand_stationery" name="brand_services" value="stationery">
-                                <label for="brand_stationery">Letterhead & Stationery</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="brand_presentations" name="brand_services" value="presentations">
-                                <label for="brand_presentations">Presentation Templates</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="brand_stage">What stage is your brand in?</label>
-                            <select id="brand_stage" name="brand_stage">
-                                <option value="">Select...</option>
-                                <option value="new_business">New Business (Need Everything)</option>
-                                <option value="existing_no_brand">Existing Business (No Formal Brand)</option>
-                                <option value="refresh_rebrand">Need Brand Refresh/Rebrand</option>
-                                <option value="expand_materials">Expand Existing Brand Materials</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="brand_priority">Brand Development Priority</label>
-                            <select id="brand_priority" name="brand_priority">
-                                <option value="">Select...</option>
-                                <option value="logo_first">Logo First (Foundation)</option>
-                                <option value="complete_system">Complete Brand System</option>
-                                <option value="marketing_materials">Marketing Materials Focus</option>
-                                <option value="digital_assets">Digital Assets Priority</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Marketing Services -->
-                <div class="section" id="marketing-services-section" style="display:none;">
-                    <h2 class="section-title">Marketing Services</h2>
-                    
-                    <div class="form-group">
-                        <label>Which marketing services interest you? (Check all that apply)</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="marketing_social" name="marketing_services" value="social_media">
-                                <label for="marketing_social">Social Media Management</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="marketing_content" name="marketing_services" value="content_creation">
-                                <label for="marketing_content">Blog & Content Creation</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="marketing_seo" name="marketing_services" value="seo">
-                                <label for="marketing_seo">SEO Services</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="marketing_newsletter" name="marketing_services" value="newsletter">
-                                <label for="marketing_newsletter">Newsletter Services</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="marketing_templates" name="marketing_services" value="email_templates">
-                                <label for="marketing_templates">Email Templates</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="marketing_print_ads" name="marketing_services" value="print_advertising">
-                                <label for="marketing_print_ads">Print Advertising Design</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="marketing_infographics" name="marketing_services" value="infographics">
-                                <label for="marketing_infographics">Infographic Design</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Platform Preferences -->
-                <div class="section" id="social-media-section" style="display:none;">
-                    <h2 class="section-title">Social Media & Platform Preferences</h2>
-                    
-                    <div class="form-group">
-                        <label>Which platforms would you like us to manage? (Check all that apply)</label>
-                        <div class="checkbox-group">
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="platform_instagram" name="platforms" value="instagram">
-                                <label for="platform_instagram">Instagram</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="platform_facebook" name="platforms" value="facebook">
-                                <label for="platform_facebook">Facebook</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="platform_twitter" name="platforms" value="twitter">
-                                <label for="platform_twitter">Twitter/X</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="platform_linkedin" name="platforms" value="linkedin">
-                                <label for="platform_linkedin">LinkedIn</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="platform_tiktok" name="platforms" value="tiktok">
-                                <label for="platform_tiktok">TikTok</label>
-                            </div>
-                            <div class="checkbox-item">
-                                <input type="checkbox" id="platform_youtube" name="platforms" value="youtube">
-                                <label for="platform_youtube">YouTube</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="posting_approach">Content posting approach</label>
-                            <select id="posting_approach" name="posting_approach">
-                                <option value="">Select...</option>
-                                <option value="scheduled">Pre-scheduled posts</option>
-                                <option value="realtime">Real-time posting</option>
-                                <option value="mixed">Mixed approach</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="content_availability">Content availability</label>
-                            <select id="content_availability" name="content_availability">
-                                <option value="">Select...</option>
-                                <option value="provided">We provide content</option>
-                                <option value="created">You create content</option>
-                                <option value="collaborative">Collaborative</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact & Brand Details -->
-                <div class="section">
-                    <h2 class="section-title">Contact & Brand Details</h2>
-                    
-                    <div class="form-row three-col">
-                        <div class="form-group">
-                            <label for="contact_name">Contact Name <span class="required">*</span></label>
-                            <input type="text" id="contact_name" name="contact_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address <span class="required">*</span></label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="text" id="phone" name="phone">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="industry">Industry</label>
-                            <input type="text" id="industry" name="industry" placeholder="e.g., Healthcare, Technology, Retail">
-                        </div>
-                        <div class="form-group">
-                            <label for="brand_colors">Brand Colors</label>
-                            <input type="text" id="brand_colors" name="brand_colors" placeholder="e.g., Navy Blue (#1E3A8A), Gold (#B59643)">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="brand_fonts">Brand Fonts</label>
-                            <input type="text" id="brand_fonts" name="brand_fonts" placeholder="e.g., Montserrat, Open Sans">
-                        </div>
-                        <div class="form-group">
-                            <label for="logo_status">Logo/Graphics Status</label>
-                            <select id="logo_status" name="logo_status">
-                                <option value="">Select...</option>
-                                <option value="have_logo">Have logo and brand assets</option>
-                                <option value="need_logo">Need logo designed</option>
-                                <option value="need_refresh">Need brand refresh</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Competition & Project Details -->
-                <div class="section">
-                    <h2 class="section-title">Competition & Project Details</h2>
-                    
-                    <div class="form-group">
-                        <label for="competitors">Who are your top 3 competitors?</label>
-                        <textarea id="competitors" name="competitors" placeholder="List competitor names and what makes them successful"></textarea>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="budget">Project Budget Range</label>
-                            <select id="budget" name="budget">
-                                <option value="">Select...</option>
-                                <option value="<$500">Less than $500</option>
-                                <option value="$500-$1500">$500 - $1,500</option>
-                                <option value="$1500-$3000">$1,500 - $3,000</option>
-                                <option value="$3000-$7500">$3,000 - $7,500</option>
-                                <option value="$7500-$15000">$7,500 - $15,000</option>
-                                <option value="$15000+">$15,000+</option>
-                                <option value="ongoing">Ongoing Monthly Retainer</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="start_date">Preferred Start Date</label>
-                            <select id="start_date" name="start_date">
-                                <option value="">Select...</option>
-                                <option value="immediately">Immediately</option>
-                                <option value="1-2weeks">1-2 weeks</option>
-                                <option value="1month">1 month</option>
-                                <option value="2+months">2+ months</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="project_urgency">Project Urgency</label>
-                            <select id="project_urgency" name="project_urgency">
-                                <option value="">Select...</option>
-                                <option value="rush">Rush (1-2 weeks)</option>
-                                <option value="standard">Standard Timeline (3-6 weeks)</option>
-                                <option value="flexible">Flexible (2-3 months)</option>
-                                <option value="future">Future Project (3+ months)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="approval_level">Review & approval level needed</label>
-                            <select id="approval_level" name="approval_level">
-                                <option value="">Select...</option>
-                                <option value="all_concepts">All concepts and revisions</option>
-                                <option value="major_milestones">Major milestones only</option>
-                                <option value="final_approval">Final approval only</option>
-                                <option value="minimal">Minimal oversight</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Inspiration & Additional Info -->
-                <div class="section">
-                    <h2 class="section-title">Inspiration & Additional Information</h2>
-                    
-                    <div class="form-group">
-                        <label for="inspiration_accounts">Brands/designs you admire and why</label>
-                        <textarea id="inspiration_accounts" name="inspiration_accounts" placeholder="List brands, websites, social accounts, or designs you admire and what you like about them"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="current_challenges">Current marketing/branding challenges</label>
-                        <textarea id="current_challenges" name="current_challenges" placeholder="What marketing or branding challenges are you facing? What hasn't worked in the past?"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="success_measurement">How will you measure project success?</label>
-                        <textarea id="success_measurement" name="success_measurement" placeholder="What outcomes would make this project successful for your business?"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="questions_about_services">Questions about our services</label>
-                        <textarea id="questions_about_services" name="questions_about_services" placeholder="Any questions about our brand, photography, or marketing services?"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="additional_info">Additional business details</label>
-                        <textarea id="additional_info" name="additional_info" placeholder="Anything else we should know about your business, goals, or project requirements?"></textarea>
-                    </div>
-                </div>
-                
-                </div> <!-- End of Page 2 -->
-
-                <!-- Navigation Buttons -->
-                <div class="form-navigation">
-                    <button type="button" class="nav-btn prev hidden" id="prevBtn" onclick="changePage(-1)">Previous</button>
-                    <button type="button" class="nav-btn next" id="nextBtn" onclick="changePage(1)">Next</button>
-                    <button type="submit" class="submit-btn" id="submitBtn" style="display:none;">Submit Intake Form</button>
-                </div>
-                
-                <div class="admin-link" style="text-align:center; margin-top:20px;">
-                    <a href="{{ url_for('login') }}">Admin Login</a>
-                </div>
-            </form>
+                </form>
             </div>
         </div>
     </div>
 
     <!-- MW Design Studio Footer -->
-    <div class="mw-footer">
+    <div class="mw-header" style="margin-top: 3rem;">
         <div class="container">
-            <h3>Thank You!</h3>
-            <p>
-                Thank you for taking the time to complete this intake form. This information will help MW Design Studio create a customized proposal and solution that aligns with your business goals, whether you need brand development, professional photography, marketing services, or a comprehensive digital strategy.
+            <h3 style="font-size: 1.6rem; margin-bottom: 1rem;">Ready to Transform Your Business?</h3>
+            <p style="font-size: 1rem; line-height: 1.6; margin-bottom: 1rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                From stunning brand identities to powerful marketing strategies, MW Design Studio delivers custom solutions that help your business stand out and succeed in today's competitive market.
             </p>
-            <div class="contact-info">
-                <div>MW Design Studio</div>
-                <div><a href="mailto:info@mwdesign.agency">info@mwdesign.agency</a></div>
+            <div style="font-size: 1.1rem; font-weight: 600; margin-top: 2rem;">
+                <a href="mailto:info@mwdesign.agency" style="color: white; text-decoration: none;">info@mwdesign.agency</a>
             </div>
         </div>
     </div>
 
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@graph": [
-            {
-                "@type": "Organization",
-                "@id": "https://mw-design-client-intake.onrender.com/#organization",
-                "name": "MW Design Studio",
-                "url": "https://mw-design-client-intake.onrender.com/",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "{{ url_for('static', filename='mw_logo.png', _external=True) }}"
-                },
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "email": "info@mwdesign.agency",
-                    "contactType": "customer service"
-                },
-                "sameAs": []
-            },
-            {
-                "@type": "LocalBusiness",
-                "@id": "https://mw-design-client-intake.onrender.com/#localbusiness",
-                "name": "MW Design Studio",
-                "image": "{{ url_for('static', filename='mw_logo.png', _external=True) }}",
-                "telephone": "+1-XXX-XXX-XXXX",
-                "email": "info@mwdesign.agency",
-                "address": {
-                    "@type": "PostalAddress",
-                    "addressCountry": "US"
-                },
-                "url": "https://mw-design-client-intake.onrender.com/",
-                "priceRange": "$500-$15000+",
-                "openingHours": "Mo-Fr 09:00-17:00",
-                "serviceArea": {
-                    "@type": "Country",
-                    "name": "United States"
-                }
-            },
-            {
-                "@type": "Service",
-                "@id": "https://mw-design-client-intake.onrender.com/#brandservices",
-                "name": "Brand Design Services",
-                "description": "Professional brand identity design including logo design, brand guidelines, and visual identity systems.",
-                "provider": {
-                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
-                },
-                "serviceType": "Brand Design",
-                "areaServed": "US"
-            },
-            {
-                "@type": "Service",
-                "@id": "https://mw-design-client-intake.onrender.com/#photography",
-                "name": "Professional Photography Services",
-                "description": "Professional photography services including headshots, product photography, brand photography, and event photography.",
-                "provider": {
-                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
-                },
-                "serviceType": "Photography",
-                "areaServed": "US"
-            },
-            {
-                "@type": "Service",
-                "@id": "https://mw-design-client-intake.onrender.com/#marketing",
-                "name": "Marketing Services",
-                "description": "Comprehensive marketing services including SEO, social media management, content creation, and digital marketing strategy.",
-                "provider": {
-                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
-                },
-                "serviceType": "Marketing",
-                "areaServed": "US"
-            },
-            {
-                "@type": "WebPage",
-                "@id": "https://mw-design-client-intake.onrender.com/#webpage",
-                "url": "https://mw-design-client-intake.onrender.com/",
-                "name": "MW Design Studio - Client Intake Form",
-                "description": "Professional client intake form for MW Design Studio's brand design, photography, and marketing services.",
-                "isPartOf": {
-                    "@id": "https://mw-design-client-intake.onrender.com/#website"
-                },
-                "about": {
-                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
-                },
-                "primaryImageOfPage": {
-                    "@type": "ImageObject",
-                    "url": "{{ url_for('static', filename='mw_logo.png', _external=True) }}"
-                }
-            },
-            {
-                "@type": "WebSite",
-                "@id": "https://mw-design-client-intake.onrender.com/#website",
-                "url": "https://mw-design-client-intake.onrender.com/",
-                "name": "MW Design Studio",
-                "description": "Professional brand design, photography, and marketing services for businesses.",
-                "publisher": {
-                    "@id": "https://mw-design-client-intake.onrender.com/#organization"
-                }
-            }
-        ]
-    }
-    </script>
-    
-    <!-- Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX');
-    </script>
-    
-    <!-- PWA Service Worker Registration -->
-    <script>
-        // Register Service Worker for PWA functionality
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', async function() {
-                try {
-                    const registration = await navigator.serviceWorker.register('/static/sw.js');
-                    console.log('MW PWA: Service Worker registered successfully:', registration.scope);
-                    
-                    // Listen for updates
-                    registration.addEventListener('updatefound', () => {
-                        const newWorker = registration.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                console.log('MW PWA: New content is available; please refresh.');
-                                // Show update notification to user
-                                showUpdateNotification();
-                            }
-                        });
-                    });
-                } catch (error) {
-                    console.log('MW PWA: Service Worker registration failed:', error);
-                }
-            });
-        }
-
-        // Show PWA install prompt
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            console.log('MW PWA: Install prompt available');
-            e.preventDefault();
-            deferredPrompt = e;
-            showInstallButton();
-        });
-
-        function showInstallButton() {
-            // Create install button if it doesn't exist
-            if (!document.getElementById('pwa-install-btn')) {
-                const installBtn = document.createElement('button');
-                installBtn.id = 'pwa-install-btn';
-                installBtn.innerText = 'Install App';
-                installBtn.style.cssText = `
-                    position: fixed;
-                    bottom: 20px;
-                    right: 20px;
-                    background: var(--mw-gradient);
-                    color: white;
-                    border: none;
-                    padding: 12px 20px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.3);
-                    font-weight: 600;
-                    z-index: 1000;
-                `;
-                
-                installBtn.addEventListener('click', async () => {
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt();
-                        const { outcome } = await deferredPrompt.userChoice;
-                        console.log(`MW PWA: Install ${outcome}`);
-                        deferredPrompt = null;
-                        installBtn.remove();
-                    }
-                });
-                
-                document.body.appendChild(installBtn);
-                
-                // Auto-hide after 10 seconds
-                setTimeout(() => {
-                    if (installBtn.parentNode) {
-                        installBtn.style.opacity = '0.7';
-                    }
-                }, 10000);
-            }
-        }
-
-        function showUpdateNotification() {
-            // Show subtle update notification
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: var(--mw-secondary);
-                color: white;
-                padding: 12px 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-                z-index: 1001;
-                cursor: pointer;
-                font-weight: 500;
-            `;
-            notification.innerHTML = 'New version available - Click to refresh';
-            
-            notification.addEventListener('click', () => {
-                window.location.reload();
-            });
-            
-            document.body.appendChild(notification);
-            
-            // Auto-remove after 10 seconds
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 10000);
-        }
-
-        // Form offline handling
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('form');
-            if (form) {
-                form.addEventListener('submit', function(e) {
-                    if (!navigator.onLine) {
-                        e.preventDefault();
-                        alert('You are currently offline. Your form will be saved and submitted when connection is restored.');
-                        
-                        // The service worker will handle caching the form data
-                        fetch(form.action, {
-                            method: 'POST',
-                            body: new FormData(form)
-                        }).catch(error => {
-                            console.log('MW PWA: Form cached for offline submission');
-                        });
-                    }
-                });
-            }
-
-            // Network status indicator
-            function updateNetworkStatus() {
-                if (!navigator.onLine) {
-                    showOfflineIndicator();
-                } else {
-                    hideOfflineIndicator();
-                }
-            }
-
-            function showOfflineIndicator() {
-                if (!document.getElementById('offline-indicator')) {
-                    const indicator = document.createElement('div');
-                    indicator.id = 'offline-indicator';
-                    indicator.innerHTML = 'WARNING: You are offline';
-                    indicator.style.cssText = `
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        background: #f39c12;
-                        color: white;
-                        text-align: center;
-                        padding: 8px;
-                        z-index: 1002;
-                        font-weight: 600;
-                    `;
-                    document.body.appendChild(indicator);
-                }
-            }
-
-            function hideOfflineIndicator() {
-                const indicator = document.getElementById('offline-indicator');
-                if (indicator) {
-                    indicator.remove();
-                }
-            }
-
-            // Listen for network changes
-            window.addEventListener('online', updateNetworkStatus);
-            window.addEventListener('offline', updateNetworkStatus);
-            
-            // Initial check
-            updateNetworkStatus();
-        });
-        
-        // Multi-page form functionality
-        let currentPage = 1;
-        const totalPages = 2;
-        
-        function changePage(direction) {
-            // Validate current page before moving forward
-            if (direction === 1) {
-                if (!validateCurrentPage()) {
-                    return;
-                }
-            }
-            
-            // Hide current page
-            document.getElementById(`page${currentPage}`).classList.remove('active');
-            document.getElementById(`step${currentPage}`).classList.remove('active');
-            
-            // Update current page
-            currentPage += direction;
-            
-            // Show new page
-            document.getElementById(`page${currentPage}`).classList.add('active');
-            document.getElementById(`step${currentPage}`).classList.add('active');
-            
-            // Update progress bar
-            updateProgressBar();
-            
-            // Update navigation buttons
-            updateNavigationButtons();
-            
-            // Scroll to top of form
-            document.querySelector('.form-wrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        
-        function updateProgressBar() {
-            const progressLine = document.getElementById('progressLine');
-            if (currentPage === 1) {
-                progressLine.classList.remove('step-2');
-                document.getElementById('step1').classList.add('active');
-                document.getElementById('step2').classList.remove('active');
-            } else if (currentPage === 2) {
-                progressLine.classList.add('step-2');
-                document.getElementById('step1').classList.add('completed');
-                document.getElementById('step1').classList.remove('active');
-                document.getElementById('step2').classList.add('active');
-            }
-        }
-        
-        function updateNavigationButtons() {
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const submitBtn = document.getElementById('submitBtn');
-            
-            // Show/hide previous button
-            if (currentPage === 1) {
-                prevBtn.classList.add('hidden');
-            } else {
-                prevBtn.classList.remove('hidden');
-            }
-            
-            // Show next or submit button
-            if (currentPage === totalPages) {
-                nextBtn.style.display = 'none';
-                submitBtn.style.display = 'inline-block';
-            } else {
-                nextBtn.style.display = 'inline-block';
-                submitBtn.style.display = 'none';
-            }
-        }
-        
-        function validateCurrentPage() {
-            const currentPageElement = document.getElementById(`page${currentPage}`);
-            const requiredFields = currentPageElement.querySelectorAll('[required]');
+        // Enhanced form validation
+        document.getElementById('intakeForm').addEventListener('submit', function(e) {
+            const requiredFields = document.querySelectorAll('[required]');
             let isValid = true;
-            
+            let errorMessages = [];
+
+            // Check required fields
             requiredFields.forEach(field => {
                 if (!field.value.trim()) {
-                    field.classList.add('error');
                     field.style.borderColor = '#e74c3c';
                     isValid = false;
-                    
-                    // Remove error styling after user starts typing
-                    field.addEventListener('input', function() {
-                        this.style.borderColor = '';
-                    });
                 } else {
-                    field.style.borderColor = '';
+                    field.style.borderColor = '#e1e8ed';
                 }
             });
-            
-            if (!isValid) {
-                alert('Please fill in all required fields before proceeding.');
-            }
-            
-            return isValid;
-        }
-        
-        // Conditional form logic
-        function handleServiceSelection() {
-            const serviceCheckboxes = document.querySelectorAll('input[name="services_needed"]');
-            
-            serviceCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    updateConditionalSections();
-                });
-            });
-        }
-        
-        function updateConditionalSections() {
-            const selectedServices = Array.from(document.querySelectorAll('input[name="services_needed"]:checked')).map(cb => cb.value);
-            
-            // Photography Services
-            const photographySection = document.getElementById('photography-section');
-            if (selectedServices.includes('photography')) {
-                photographySection.style.display = 'block';
-            } else {
-                photographySection.style.display = 'none';
-                // Clear photography fields if hidden
-                clearSectionFields(photographySection);
-            }
-            
-            // Brand Services
-            const brandServicesSection = document.getElementById('brand-services-section');
-            if (selectedServices.includes('brand_services')) {
-                brandServicesSection.style.display = 'block';
-            } else {
-                brandServicesSection.style.display = 'none';
-                clearSectionFields(brandServicesSection);
-            }
-            
-            // Marketing Services
-            const marketingSection = document.getElementById('marketing-services-section');
-            if (selectedServices.includes('marketing')) {
-                marketingSection.style.display = 'block';
-                
-                // Show social media section if marketing is selected
-                const socialMediaSection = document.getElementById('social-media-section');
-                socialMediaSection.style.display = 'block';
-            } else {
-                marketingSection.style.display = 'none';
-                document.getElementById('social-media-section').style.display = 'none';
-                clearSectionFields(marketingSection);
-                clearSectionFields(document.getElementById('social-media-section'));
-            }
-        }
-        
-        function clearSectionFields(section) {
-            // Clear all form fields in the hidden section
-            const inputs = section.querySelectorAll('input, select, textarea');
-            inputs.forEach(input => {
-                if (input.type === 'checkbox' || input.type === 'radio') {
-                    input.checked = false;
-                } else {
-                    input.value = '';
-                }
-            });
-        }
-        
-        // Handle social media conditional questions
-        function handleSocialMediaQuestions() {
-            const socialManagementSelect = document.getElementById('social_management');
-            const socialHandlesField = document.getElementById('social_handles').closest('.form-group');
-            const followerCountsField = document.getElementById('follower_counts').closest('.form-group');
-            
-            socialManagementSelect.addEventListener('change', function() {
-                if (this.value === 'nobody') {
-                    // Hide current social media fields if nobody manages it
-                    socialHandlesField.style.display = 'none';
-                    followerCountsField.style.display = 'none';
-                } else {
-                    socialHandlesField.style.display = 'block';
-                    followerCountsField.style.display = 'block';
-                }
-            });
-        }
-        
-        // Handle logo status conditional questions
-        function handleLogoStatusQuestions() {
-            const logoStatusSelect = document.getElementById('logo_status');
-            const brandColorsField = document.getElementById('brand_colors').closest('.form-group');
-            const brandFontsField = document.getElementById('brand_fonts').closest('.form-group');
-            
-            logoStatusSelect.addEventListener('change', function() {
-                if (this.value === 'need_logo') {
-                    // Hide brand asset questions if they need a logo designed
-                    brandColorsField.style.opacity = '0.5';
-                    brandFontsField.style.opacity = '0.5';
-                } else {
-                    brandColorsField.style.opacity = '1';
-                    brandFontsField.style.opacity = '1';
-                }
-            });
-        }
 
-        // Initialize form
-        document.addEventListener('DOMContentLoaded', function() {
-            updateNavigationButtons();
-            updateProgressBar();
-            handleServiceSelection();
-            handleSocialMediaQuestions();
-            handleLogoStatusQuestions();
+            // Check if at least one service is selected
+            const serviceCheckboxes = document.querySelectorAll('input[name="services_needed"]:checked');
+            if (serviceCheckboxes.length === 0) {
+                isValid = false;
+                errorMessages.push('Please select at least one service.');
+                // Highlight all service checkboxes
+                document.querySelectorAll('input[name="services_needed"]').forEach(cb => {
+                    cb.closest('.checkbox-item').style.borderColor = '#e74c3c';
+                });
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                if (errorMessages.length > 0) {
+                    alert('Please complete all required fields:\n\n• All fields marked with * are required\n• ' + errorMessages.join('\n• '));
+                } else {
+                    alert('Please fill in all required fields marked with *');
+                }
+            }
+        });
+
+        // Clear error styling on input
+        document.querySelectorAll('input, textarea, select').forEach(field => {
+            field.addEventListener('input', function() {
+                this.style.borderColor = '#e1e8ed';
+            });
+            field.addEventListener('change', function() {
+                this.style.borderColor = '#e1e8ed';
+            });
+        });
+
+        // Clear error styling when a service checkbox is checked
+        document.querySelectorAll('input[name="services_needed"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const anyChecked = document.querySelectorAll('input[name="services_needed"]:checked').length > 0;
+                if (anyChecked) {
+                    document.querySelectorAll('input[name="services_needed"]').forEach(cb => {
+                        cb.closest('.checkbox-item').style.borderColor = '#e1e8ed';
+                    });
+                }
+            });
         });
     </script>
 </body>
