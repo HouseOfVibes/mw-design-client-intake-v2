@@ -108,7 +108,15 @@ def send_to_notion(form_data):
 @app.route('/')
 def home():
     """Render the intake form"""
-    return render_template('index.html')
+    try:
+        return render_template('index.html')
+    except Exception as e:
+        print(f"Template error: {str(e)}")
+        print(f"Template folder: {app.template_folder}")
+        print(f"BASE_DIR: {BASE_DIR}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({"error": f"Template error: {str(e)}", "template_folder": str(app.template_folder)}), 500
 
 @app.route('/submit_form_new', methods=['POST'])
 def submit_form():
