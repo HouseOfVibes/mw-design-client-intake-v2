@@ -107,16 +107,19 @@ def send_to_notion(form_data):
 
 @app.route('/')
 def home():
-    """Render the intake form"""
+    """Serve the intake form"""
     try:
-        return render_template('index.html')
+        # Read the HTML file directly instead of using render_template
+        index_path = BASE_DIR / 'templates' / 'index.html'
+        with open(index_path, 'r', encoding='utf-8') as f:
+            return f.read()
     except Exception as e:
-        print(f"Template error: {str(e)}")
-        print(f"Template folder: {app.template_folder}")
+        print(f"Error serving index: {str(e)}")
         print(f"BASE_DIR: {BASE_DIR}")
+        print(f"Looking for: {BASE_DIR / 'templates' / 'index.html'}")
         import traceback
         traceback.print_exc()
-        return jsonify({"error": f"Template error: {str(e)}", "template_folder": str(app.template_folder)}), 500
+        return jsonify({"error": f"Error: {str(e)}", "base_dir": str(BASE_DIR)}), 500
 
 @app.route('/submit_form_new', methods=['POST'])
 def submit_form():
@@ -133,8 +136,13 @@ def submit_form():
 
 @app.route('/success')
 def success():
-    """Show success page"""
-    return render_template('submission_success.html')
+    """Serve success page"""
+    try:
+        success_path = BASE_DIR / 'templates' / 'submission_success.html'
+        with open(success_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except Exception as e:
+        return jsonify({"message": "Form submitted successfully!"}), 200
 
 @app.route('/health')
 def health():
