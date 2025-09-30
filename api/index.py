@@ -20,7 +20,19 @@ except ImportError:
     NOTION_AVAILABLE = False
 
 # Initialize Flask app
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+# Vercel needs absolute paths
+import sys
+from pathlib import Path
+
+# Get the base directory (parent of api folder)
+if '/var/task' in sys.path[0]:  # Running on Vercel
+    BASE_DIR = Path('/var/task')
+else:  # Running locally
+    BASE_DIR = Path(__file__).parent.parent
+
+app = Flask(__name__,
+            template_folder=str(BASE_DIR / 'templates'),
+            static_folder=str(BASE_DIR / 'static'))
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'default-secret-key-for-vercel')
 CORS(app)
 
