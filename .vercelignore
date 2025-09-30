@@ -17,6 +17,7 @@ models_v2.py
 database.py
 database_v2.py
 google_chat_notifier.py
-requirements.txt
+/requirements.txt
 requirements_chat.txt
 requirements_v2.txt
+requirements-vercel.txt
