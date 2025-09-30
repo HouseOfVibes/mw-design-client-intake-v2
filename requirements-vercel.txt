@@ -1,5 +1,7 @@
 Flask==3.0.3
 flask-cors==4.0.0
-notion-client==2.2.1
+flask-wtf==1.2.2
+flask-limiter==3.12
 python-dotenv==1.0.1
 requests==2.32.3
+notion-client==2.2.1
