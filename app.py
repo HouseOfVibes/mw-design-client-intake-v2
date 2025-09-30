@@ -1,11 +1,10 @@
 import os
-import json
 import re
 import secrets
 from datetime import datetime
 import logging
 
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file, jsonify
 from flask_wtf.csrf import CSRFProtect
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -185,73 +184,6 @@ def log_security_event(event_type, user_id=None, ip_address=None, details=""):
     """Log security events"""
     ip = ip_address or request.remote_addr
     security_logger.warning(f"{datetime.now()} - {event_type} - User: {user_id} - IP: {ip} - {details}")
-
-# Notion integration methods are now in models.py
-
-# Notion Integration Functions
-def create_notion_page(submission):
-    """Create a new page in Notion database for the submission"""
-    if not notion_client or not NOTION_DB_ID:
-        logger.warning("Notion client not available")
-        return None
-        
-    try:
-        logger.info(f"Creating Notion page for submission {submission.id}")
-        
-        response = notion_client.pages.create(
-            parent={"database_id": NOTION_DB_ID},
-            properties=submission.to_notion_properties()
-        )
-        
-        # Update submission with Notion details
-        submission.notion_page_id = response['id']
-        submission.synced_to_notion = True
-        submission.last_notion_sync = datetime.utcnow()
-        submission.notion_sync_error = None
-        
-        db.session.commit()
-        
-        logger.info(f"Created Notion page {response['id']} for submission {submission.id}")
-        return response
-        
-    except Exception as e:
-        error_msg = f"Failed to create Notion page: {str(e)}"
-        logger.error(error_msg)
-        
-        submission.synced_to_notion = False
-        submission.notion_sync_error = error_msg
-        db.session.commit()
-        
-        return None
-
-def update_notion_page(submission):
-    """Update existing Notion page with submission changes"""
-    if not notion_client or not submission.notion_page_id:
-        return create_notion_page(submission)
-    
-    try:
-        logger.info(f"Updating Notion page {submission.notion_page_id}")
-        
-        response = notion_client.pages.update(
-            page_id=submission.notion_page_id,
-            properties=submission.to_notion_properties()
-        )
-        
-        submission.last_notion_sync = datetime.utcnow()
-        submission.notion_sync_error = None
-        db.session.commit()
-        
-        logger.info(f"Updated Notion page {submission.notion_page_id}")
-        return response
-        
-    except Exception as e:
-        error_msg = f"Failed to update Notion page: {str(e)}"
-        logger.error(error_msg)
-        
-        submission.notion_sync_error = error_msg
-        db.session.commit()
-        
-        return None
 
 def send_to_notion_direct(form_data):
     """Send form data directly to Notion database (for simplified form)"""
@@ -544,7 +476,6 @@ def page_not_found(error):
 @app.errorhandler(500)
 def internal_server_error(error):
     """Custom 500 error handler"""
-    db.session.rollback()
     logger.error(f"Internal server error: {error}")
     log_security_event('Internal Server Error', details=f'500 error for URL: {request.url}')
     return render_template('404.html'), 500
